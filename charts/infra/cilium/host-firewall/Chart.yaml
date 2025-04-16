@@ -1,0 +1,5 @@
+name: cilium-host-firewall
+apiVersion: v2
+version: v1.1.0
+description: "Cilium host firewall"
+

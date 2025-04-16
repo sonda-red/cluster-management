@@ -1,0 +1,21 @@
+controller:
+  kind: Deployment
+  stats:
+    enabled: true
+  config:
+    allow-snippet-annotations: "true"
+    use-forwarded-headers: "true"
+    compute-full-forwarded-for: "true"
+    use-proxy-protocol: "false"
+  ingressClassResource:
+    # -- If true, Ingresses without `ingressClassName` get assigned to this IngressClass on creation.
+    # Ingress creation gets rejected if there are multiple default IngressClasses.
+    # Ref: https://kubernetes.io/docs/concepts/services-networking/ingress/#default-ingress-class
+    default: true
+  tolerations:
+    - key: "node-role.kubernetes.io/master"
+      operator: "Exists"
+      effect: "NoSchedule"
+    - key: "node-role.kubernetes.io/gpu"
+      operator: "Exists"
+      effect: "NoSchedule"

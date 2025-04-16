@@ -1,0 +1,4 @@
+ui:
+  enabled: true
+ha:
+  enabled: true
