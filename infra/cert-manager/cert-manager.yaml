@@ -6,13 +6,16 @@ metadata:
 spec:
   project: default
 
-  source:
-    repoURL: 'https://charts.jetstack.io'
+  sources:
+  - repoURL: 'https://charts.jetstack.io'
     chart: cert-manager
     targetRevision: v1.17.1
     helm:
       valueFiles:
-        - values.yaml
+      - $values/infra/cert-manager/values.yaml
+  - repoURL: 'https://github.com/sonda-red/cluster-management'
+    targetRevision: main
+    ref: values
 
   destination:
     server: https://kubernetes.default.svc
