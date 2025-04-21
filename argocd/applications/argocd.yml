@@ -1,8 +1,14 @@
-project: default
-source:
-  repoURL: https://github.com/sonda-red/cluster-management
-  path: infra/argicd
-  targetRevision: HEAD
-destination:
-  server: https://kubernetes.default.svc
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-app-git
   namespace: argo
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/sonda-red/cluster-management
+    path: infra/argicd
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo
