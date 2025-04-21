@@ -1,0 +1,3 @@
+resources:
+  - issuer-ca.yaml
+  - root-ca-yaml

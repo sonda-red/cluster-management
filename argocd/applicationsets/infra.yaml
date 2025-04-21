@@ -2,13 +2,21 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: infra-apps
+  namespace: argocd
 spec:
   generators:
     - git:
         repoURL: https://github.com/your-org/cluster-management.git
         revision: main
         directories:
-          - path: infra/*
+          # Include all app manifests in the infra sub directories
+          - path: infra/**/*
+    - git:
+        repoURL: https://github.com/your-org/cluster-management.git
+        revision: main
+        files:
+          # Include all app manifests in the infra sub directories
+          - path: infra/**/app.yml
   template:
     metadata:
       name: '{{path.basename}}'
@@ -20,7 +28,7 @@ spec:
         path: '{{path}}'
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{path.basename}}'     # or "infrastructure" if you want all in one ns
+        namespace: '{{path.basename}}'
       syncPolicy:
         automated:
           prune: true
