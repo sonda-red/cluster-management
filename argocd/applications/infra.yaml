@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: 'https://github.com/sonda-red/cluster-management'
     targetRevision: main
-    path: argocd/applicationsets/infra.yaml
+    path: argocd/applicationsets
 
   destination:
     server: https://kubernetes.default.svc
