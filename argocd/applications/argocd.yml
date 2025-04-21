@@ -1,0 +1,8 @@
+project: default
+source:
+  repoURL: https://github.com/sonda-red/cluster-management
+  path: infra/argicd
+  targetRevision: HEAD
+destination:
+  server: https://kubernetes.default.svc
+  namespace: argo
