@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infra-apps
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/your-org/cluster-management.git
+        revision: main
+        directories:
+          - path: infra/*
+  template:
+    metadata:
+      name: '{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/your-org/cluster-management.git
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{path.basename}}'     # or "infrastructure" if you want all in one ns
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+            - CreateNamespace=true
+            - PruneLast=true
