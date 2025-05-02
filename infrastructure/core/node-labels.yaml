@@ -11,7 +11,7 @@ kind: Node
 metadata:
   name: sonda-02
   labels:
-    sw-volume: "true"
+    sw-backend: "true"
     node-role.kubernetes.io/worker: "true"
     node-role.kubernetes.io/nuc: "true"
 ---
@@ -20,6 +20,6 @@ kind: Node
 metadata:
   name: sonda-core
   labels:
-    sw-backend: "true"
+    sw-volume: "true"
     node-role.kubernetes.io/gpu: "true"
     node-role.kubernetes.io/worker: "true"
