@@ -16,4 +16,5 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: seaweedfs-values
+      namespace: seaweedfs
       valuesKey: values.yaml
