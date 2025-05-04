@@ -5,6 +5,9 @@ metadata:
   namespace: seaweedfs
 spec:
   interval: 5m
+  upgrade:
+    remediation:
+      strategy: uninstall
   chart:
     spec:
       chart: seaweedfs
@@ -13,9 +16,6 @@ spec:
         kind: HelmRepository
         name: seaweedfs
         namespace: seaweedfs
-    upgrade:
-      remediation:
-        strategy: uninstall
   valuesFrom:
     - kind: ConfigMap
       name: seaweedfs-values
