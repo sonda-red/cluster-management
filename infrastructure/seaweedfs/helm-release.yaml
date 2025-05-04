@@ -13,6 +13,9 @@ spec:
         kind: HelmRepository
         name: seaweedfs
         namespace: seaweedfs
+    upgrade:
+      remediation:
+        strategy: uninstall
   valuesFrom:
     - kind: ConfigMap
       name: seaweedfs-values
