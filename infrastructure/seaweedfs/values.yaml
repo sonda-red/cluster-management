@@ -16,7 +16,7 @@ master:
   # should map directly to the value of the resources field for a PodSpec,
   # formatted as a multi-line string. By default no direct resource request
   # is made.
-  resources: |
+  resources:
     requests:
       cpu: 100m
       memory: 128Mi
@@ -114,7 +114,7 @@ volume:
   # should map directly to the value of the resources field for a PodSpec,
   # formatted as a multi-line string. By default no direct resource request
   # is made.
-  resources: |
+  resources:
     requests:
       cpu: 100m
       memory: 128Mi
