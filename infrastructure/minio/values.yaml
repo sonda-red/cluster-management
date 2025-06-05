@@ -15,9 +15,6 @@ resources:
 
 replicas: 1
 
-rootUser: "minioadmin"
-rootPassword: "minioadmin123"  # Replace in production or use a Secret
-
 buckets:
   - name: sonda-data
     policy: none
