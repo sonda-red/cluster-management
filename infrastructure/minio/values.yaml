@@ -1,0 +1,49 @@
+mode: standalone
+
+persistence:
+  enabled: true
+  size: 600Gi
+  storageClass: "local-path"
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "250m"
+  limits:
+    memory: "2Gi"
+    cpu: "1"
+
+replicas: 1
+
+rootUser: "minioadmin"
+rootPassword: "minioadmin123"  # Replace in production or use a Secret
+
+buckets:
+  - name: sonda-data
+    policy: none
+    purge: false
+
+service:
+  ingress:
+    enabled: true
+    ingressClassName: "nginx"
+    labels: {}
+      # node-role.kubernetes.io/ingress: platform
+    annotations: 
+      cert-manager.io/cluster-issuer: sonda-red-local-ca
+    path: /
+    hosts:
+      - minio.sonda.red.local
+    tls: 
+     - secretName: minio-tls
+       hosts:
+         - minio.sonda.red.local
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: node-role.kubernetes.io/gpu
+              operator: In
+              values:
+                - "true"
