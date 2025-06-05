@@ -27,10 +27,10 @@ master:
   # Affinity Settings
   # Commenting out or setting as empty the affinity variable, will allow
   # deployment to single node services such as Minikube
-  affinity: |
+  affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector
+        - labelSelector:
             matchLabels:
               app.kubernetes.io/name: seaweedfs
               app.kubernetes.io/instance: seaweedfs
@@ -40,7 +40,7 @@ master:
   # Toleration Settings for master pods
   # This should be a multi-line string matching the Toleration array
   # in a PodSpec.
-  tolerations: |
+  tolerations:
     - key: "node-role.kubernetes.io/master"
       operator: "Exists"
       effect: "NoSchedule"
@@ -48,7 +48,7 @@ master:
   # nodeSelector labels for master pod assignment, formatted as a muli-line string.
   # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
   # Example:
-  nodeSelector: |
+  nodeSelector:
     node-role.kubernetes.io/master: "true"
 
   # used to assign priority to master pods
@@ -95,7 +95,7 @@ volume:
   # Affinity Settings
   # Commenting out or setting as empty the affinity variable, will allow
   # deployment to single node services such as Minikube
-  affinity: |
+  affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
@@ -130,7 +130,7 @@ volume:
   # nodeSelector labels for server pod assignment, formatted as a muli-line string.
   # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
   # Example:
-  nodeSelector: |
+  nodeSelector:
    kubernetes.io/arch: amd64
   # nodeSelector: |
   #   sw-volume: "true"
@@ -223,7 +223,7 @@ filer:
   # Affinity Settings
   # Commenting out or setting as empty the affinity variable, will allow
   # deployment to single node services such as Minikube
-  affinity: |
+  affinity:
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
@@ -252,14 +252,14 @@ filer:
   # This should be a multi-line string matching the Toleration array
   # in a PodSpec.
 
-  tolerations: |
+  tolerations:
     - key: "node-role.kubernetes.io/master"
       operator: "Exists"
       effect: "NoSchedule"
   # nodeSelector labels for server pod assignment, formatted as a muli-line string.
   # ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
   # Example:
-  nodeSelector: |
+  nodeSelector:
     sw-backend: "true"
 
   s3:
