@@ -26,7 +26,7 @@ console:
     labels: {}
       # node-role.kubernetes.io/ingress: platform
     annotations: 
-      cert-manager.io/cluster-issuer: sonda-red-local-ca
+      cert-manager.io/cluster-issuer: sonda-red-local
     tls: true
 
 affinity:
