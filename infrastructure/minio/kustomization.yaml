@@ -9,11 +9,6 @@ configMapGenerator:
   - name: minio-values
     files:
       - values.yaml
-secretGenerator:
-  - name: minio-secrets
-    files:
-      - secrets.yaml=secrets-encrypted.yaml
-    type: Opaque
 generatorOptions:
   disableNameSuffixHash: true
 configurations:
