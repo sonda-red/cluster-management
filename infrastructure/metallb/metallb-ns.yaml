@@ -1,4 +1,4 @@
-# Create minio namespace
+# Create metallb namespace
 apiVersion: v1
 kind: Namespace
 metadata:
