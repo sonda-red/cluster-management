@@ -3,6 +3,6 @@ kind: HelmRepository
 metadata:
   name: metallb
   namespace: metallb-system
-  spec:
-    interval: 1m
-    url: https://metallb.github.io/metallb 
+spec:
+  interval: 1m
+  url: https://metallb.github.io/metallb 
