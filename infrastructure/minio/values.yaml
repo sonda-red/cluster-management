@@ -19,6 +19,7 @@ buckets:
   - name: sonda-data
     policy: none
     purge: false
+
 console:
   ingress:
     enabled: true
@@ -28,7 +29,6 @@ console:
       # node-role.kubernetes.io/ingress: platform
     annotations: 
       cert-manager.io/cluster-issuer: sonda-red-local-ca
-    path: /
     tls: true
 
 affinity:
