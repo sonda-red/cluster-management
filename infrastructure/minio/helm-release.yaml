@@ -20,3 +20,6 @@ spec:
     - kind: ConfigMap
       name: minio-values
       valuesKey: values.yaml
+    - kind: Secret
+      name: minio-secrets
+      valuesKey: secrets.yaml
