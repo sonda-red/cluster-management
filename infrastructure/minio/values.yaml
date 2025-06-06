@@ -15,10 +15,7 @@ resources:
 
 replicas: 1
 
-buckets:
-  - name: sonda-data
-    policy: none
-    purge: false
+defaultBuckets: "sonda-data"
 
 console:
   ingress:
