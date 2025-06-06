@@ -5,6 +5,7 @@ resources:
   - metallb-ns.yaml
   - helm-repository.yaml
   - helm-release.yaml
+  - config.yaml
 configMapGenerator:
   - name: metallb-values
     files:
