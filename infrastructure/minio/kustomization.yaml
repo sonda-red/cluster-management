@@ -16,3 +16,5 @@ secretGenerator:
     type: Opaque
 generatorOptions:
   disableNameSuffixHash: true
+configurations:
+  - kustomizeconfig.yaml

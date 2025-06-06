@@ -22,4 +22,3 @@ spec:
       valuesKey: values.yaml
     - kind: Secret
       name: minio-secrets
-      valuesKey: secrets.yaml
