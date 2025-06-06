@@ -4,7 +4,7 @@ namespace: minio
 resources:
   - minio-ns.yaml
   - helm-repository.yaml
-  - secrets-encrypted.yaml
+  - minio-secrets.yaml
   - helm-release.yaml
 configMapGenerator:
   - name: minio-values
