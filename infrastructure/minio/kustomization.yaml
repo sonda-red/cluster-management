@@ -4,12 +4,18 @@ namespace: minio
 resources:
   - minio-ns.yaml
   - helm-repository.yaml
-  - minio-secrets.yaml
+#  - minio-secrets.yaml
   - helm-release.yaml
 configMapGenerator:
   - name: minio-values
     files:
       - values.yaml
+secretGenerator:
+  - name: minio-secrets
+    files:
+      - secrets.yaml=secrets.enc.yaml
+    options:
+      disableNameSuffixHash: true
 generatorOptions:
   disableNameSuffixHash: true
 configurations:
