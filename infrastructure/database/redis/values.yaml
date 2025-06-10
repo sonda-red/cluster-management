@@ -7,7 +7,7 @@ usePassword: false
 
 persistence:
   enabled: true
-  size: 8Gi
+  size: 20Gi
 
 master:
   resources:

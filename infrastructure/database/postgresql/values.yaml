@@ -1,0 +1,9 @@
+  persistence:
+    storageClass: "local-path"
+    ## @param primary.persistence.accessModes PVC Access Mode for PostgreSQL volume
+    ##
+    accessModes:
+      - ReadWriteOnce
+    ## @param primary.persistence.size PVC Storage Request for PostgreSQL volume
+    ##
+    size: 20Gi

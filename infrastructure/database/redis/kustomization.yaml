@@ -1,20 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: harbor
+namespace: database
 resources:
-  - namespace.yaml
-  - helm-repository.yaml
   - helm-release.yaml
 configMapGenerator:
-  - name: harbor-values
+  - name: redis-values
     files:
       - values.yaml
-secretGenerator:
-  - name: harbor-secrets
-    files:
-      - secrets.yaml=secrets.enc.yaml
-    options:
-      disableNameSuffixHash: true
 generatorOptions:
   disableNameSuffixHash: true
 configurations:
