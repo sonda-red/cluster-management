@@ -1,0 +1,19 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nfd
+  namespace: nfd
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: nfd
+      version: 1.17.1
+      sourceRef:
+        kind: HelmRepository
+        name: nfd
+        namespace: nfd
+  valuesFrom:
+    - kind: ConfigMap
+      name: nfd-values
+      valuesKey: values.yaml
