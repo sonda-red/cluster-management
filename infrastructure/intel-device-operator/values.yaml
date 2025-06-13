@@ -1,15 +1,9 @@
-sharedDevNum: 1
-logLevel: 2
-resourceManager: false
-enableMonitoring: true
-allocationPolicy: "none"
+manager:
+  devices:
+    gpu: true
 
 nodeSelector:
   node-role.kubernetes.io/gpu: "true"
-
-nodeFeatureRule: true
-devices:
-  gpu: true
 
 tolerations:
   - key: "node-role.kubernetes.io/gpu"
