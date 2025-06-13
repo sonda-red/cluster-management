@@ -5,7 +5,7 @@ enableMonitoring: true
 allocationPolicy: "none"
 
 nodeSelector:
-  node-role.kubernetes.io/gpu: true
+  node-role.kubernetes.io/gpu: "true"
 
 nodeFeatureRule: true
 devices:
