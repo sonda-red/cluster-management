@@ -8,3 +8,5 @@ nodeSelector:
   node-role.kubernetes.io/gpu: true
 
 nodeFeatureRule: true
+devices:
+  gpu: true
