@@ -10,3 +10,8 @@ nodeSelector:
 nodeFeatureRule: true
 devices:
   gpu: true
+
+tolerations:
+  - key: "node-role.kubernetes.io/gpu"
+    operator: "Exists"
+    effect: "NoSchedule"
