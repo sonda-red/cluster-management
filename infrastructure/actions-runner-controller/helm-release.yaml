@@ -17,6 +17,3 @@ spec:
     - kind: ConfigMap
       name: arc-values
       valuesKey: values.yaml
-    - kind: Secret
-      name: arc-secrets
-      valuesKey: secrets.yaml
