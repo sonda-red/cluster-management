@@ -3,7 +3,6 @@ kind: Kustomization
 namespace: github
 resources:
   - namespace.yaml
-  - helm-repository.yaml
   - helm-release.yaml
 configMapGenerator:
   - name: arc-set-nuc-values
