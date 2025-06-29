@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: github
+resources:
+  - namespace.yaml
+  - helm-repository.yaml
+  - helm-release.yaml
+configMapGenerator:
+  - name: arc-set-nuc-values
+    files:
+      - values.yaml
+secretGenerator:
+  - name: arc-set-nuc-secrets
+    files:
+      - secrets.yaml=secrets.enc.yaml
+    options:
+      disableNameSuffixHash: true
+generatorOptions:
+  disableNameSuffixHash: true
+configurations:
+  - kustomizeconfig.yaml
