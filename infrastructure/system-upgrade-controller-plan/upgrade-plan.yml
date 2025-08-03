@@ -17,6 +17,13 @@ spec:
   upgrade:
     image: rancher/k3s-upgrade
   version: v1.33.3-k3s1
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      operator: Exists
+      effect: NoSchedule
+    - key: node.kubernetes.io/unschedulable
+      operator: Exists
+      effect: NoSchedule
 ---
 # Agent plan
 apiVersion: upgrade.cattle.io/v1
@@ -40,3 +47,11 @@ spec:
   upgrade:
     image: rancher/k3s-upgrade
   version: v1.33.3-k3s1
+  tolerations:
+    - key: dedicated
+      operator: Equal
+      value: gpu
+      effect: PreferNoSchedule
+    - key: node.kubernetes.io/unschedulable
+      operator: Exists
+      effect: NoSchedule
