@@ -42,7 +42,7 @@ loki:
       # Forces the path style for S3 (true/false)
       s3ForcePathStyle: false
       # Allows insecure (HTTP) connections (true/false)
-      insecure: false
+      insecure: true
       # HTTP configuration settings
       http_config: {}
 
