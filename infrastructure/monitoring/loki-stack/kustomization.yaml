@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: monitoring
+resources:
+  - helm-repository.yaml
+  - helm-release.yaml
+configMapGenerator:
+  - name: loki-values
+    files:
+      - values.yaml
+secretGenerator:
+  - name: loki-secrets
+    files:
+      - secrets.yaml=secrets.enc.yaml
+    options:
+      disableNameSuffixHash: true
+generatorOptions:
+  disableNameSuffixHash: true
+configurations:
+  - kustomizeconfig.yaml

@@ -1,0 +1,59 @@
+alertmanager:
+  alertmanagerSpec:
+    replicas: 1
+    storage:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 1Gi
+grafana:
+  enabled: true
+  ingress:
+    enabled: true
+    hosts:
+      - grafana.sonda.red.local
+    path: /
+    annotations:
+      cert-manager.io/cluster-issuer: sonda-red-local
+      kubernetes.io/ingress.class: nginx
+    tls:
+      - hosts:
+          - grafana.sonda.red.local
+        secretName: grafana-tls
+
+  ## Configure additional grafana datasources (passed through tpl)
+  ## ref: https://grafana.com/docs/grafana/latest/administration/provisioning/#datasources
+  additionalDataSources:
+    - name: loki
+      type: loki
+      access: proxy
+      url: http://loki:3100
+      editable: true
+      jsonData:
+        tlsSkipVerify: true
+prometheus:
+  prometheusSpec:
+    retention: 1d
+    retentionSize: 10GB
+    replicas: 1
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 10Gi
+  ingress:
+    enabled: true
+    hosts:
+      - prometheus.sonda.red.local
+    path: /
+    annotations:
+      cert-manager.io/cluster-issuer: sonda-red-local
+      kubernetes.io/ingress.class: nginx
+    tls:
+      - hosts:
+          - prometheus.sonda.red.local
+        secretName: prometheus-tls
