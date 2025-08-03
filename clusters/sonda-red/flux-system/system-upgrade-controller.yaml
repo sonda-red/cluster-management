@@ -22,3 +22,4 @@ spec:
     kind: GitRepository
     name: system-upgrade-controller
   wait: true
+  targetNamespace: system-upgrade
