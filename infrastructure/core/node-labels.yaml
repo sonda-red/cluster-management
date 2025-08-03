@@ -3,15 +3,15 @@ kind: Node
 metadata:
   name: sonda-01
   labels:
-    sw-backend: "true"
     node-role.kubernetes.io/nuc: "true"
+    k3s-upgrade: "true"
 ---
 apiVersion: v1
 kind: Node
 metadata:
   name: sonda-02
   labels:
-    sw-backend: "true"
+    k3s-upgrade: "true"
     node-role.kubernetes.io/worker: "true"
     node-role.kubernetes.io/nuc: "true"
 ---
@@ -20,6 +20,6 @@ kind: Node
 metadata:
   name: sonda-core
   labels:
-    sw-volume: "true"
+    k3s-upgrade: "true"
     node-role.kubernetes.io/gpu: "true"
     node-role.kubernetes.io/worker: "true"
