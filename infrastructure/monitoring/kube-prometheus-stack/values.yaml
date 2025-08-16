@@ -11,7 +11,7 @@ alertmanager:
 grafana:
   enabled: true
   plugins:
-    - VictoriaLogs
+    - victoriametrics-logs-datasource
   ingress:
     enabled: true
     hosts:
