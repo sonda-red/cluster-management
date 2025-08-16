@@ -26,10 +26,10 @@ grafana:
   ## Configure additional grafana datasources (passed through tpl)
   ## ref: https://grafana.com/docs/grafana/latest/administration/provisioning/#datasources
   additionalDataSources:
-    - name: loki
-      type: loki
+    - name: VictoriaLogs
+      type: victoriametrics-logs-datasource
       access: proxy
-      url: http://loki.monitoring:3100
+      url: http://victorialogs-victoria-logs-single-server.monitoring:9428
       editable: true
       jsonData:
         tlsSkipVerify: true
