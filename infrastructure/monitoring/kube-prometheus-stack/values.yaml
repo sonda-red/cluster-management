@@ -10,6 +10,8 @@ alertmanager:
               storage: 1Gi
 grafana:
   enabled: true
+  plugins:
+    - VictoriaLogs
   ingress:
     enabled: true
     hosts:
