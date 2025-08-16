@@ -1,0 +1,54 @@
+# VictoriaLogs server (enabled by default)
+server:
+  enabled: true
+  # Time-based retention (default: 1 month)
+  retentionPeriod: 3d 
+
+  # OR disk-based retention (default: none)
+  retentionDiskSpaceUsage: 5GB
+
+  # Storage size
+  persistentVolume:
+    size: 20Gi  # Adjust based on your log volume
+
+  ingress:
+    # -- Enable deployment of ingress for server component
+    enabled: true
+
+    # -- Ingress annotations
+    annotations:
+      cert-manager.io/cluster-issuer: sonda-red-local
+      kubernetes.io/ingress.class: nginx
+
+    # -- Ingress extra labels
+    extraLabels: {}
+
+    # -- Array of host objects
+    hosts:
+      - name: victorialogs.sonda.red.local
+        path:
+          - /
+        port: http
+
+    # -- Array of TLS objects
+    tls: 
+      - secretName: victorialogs-tls
+        hosts:
+          - victorialogs.sonda.red.local
+
+    # -- Ingress controller class name
+    ingressClassName: "nginx"
+
+    # -- Ingress path type
+    pathType: Prefix
+
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+# Vector log collector (disabled by default, needs to be enabled)
+vector:
+  enabled: true

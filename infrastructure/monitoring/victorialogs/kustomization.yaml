@@ -5,15 +5,9 @@ resources:
   - helm-repository.yaml
   - helm-release.yaml
 configMapGenerator:
-  - name: loki-values
+  - name: vl-values
     files:
       - values.yaml
-secretGenerator:
-  - name: loki-secrets
-    files:
-      - secrets.yaml=secrets.enc.yaml
-    options:
-      disableNameSuffixHash: true
 generatorOptions:
   disableNameSuffixHash: true
 configurations:
