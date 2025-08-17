@@ -3,13 +3,18 @@
   "extends": [
     "config:recommended"
   ],
-  "enabledManagers": ["flux", "helmv3"],
+  "enabledManagers": [
+    "flux",
+    "helmv3"
+  ],
   "flux": {
-    "fileMatch": [
-      "(^|/)infrastructure/.*\\.ya?ml$",
-      "(^|/)clusters/.*\\.ya?ml$",
-      "(^|/)templates/.*\\.ya?ml$"
+    "managerFilePatterns": [
+      "/(^|/)infrastructure/.*\\.ya?ml$/",
+      "/(^|/)clusters/.*\\.ya?ml$/",
+      "/(^|/)templates/.*\\.ya?ml$/"
     ]
-    },
-    "ignorePaths": ["templates/**"]
+  },
+  "ignorePaths": [
+    "templates/**"
+  ]
 }
