@@ -52,7 +52,6 @@ grafana:
     default:
       victorialogs-explorer:
         gnetId: 22759
-        revision: 1            # bump if you want a newer rev
         datasource: VictoriaLogs
 prometheus:
   prometheusSpec:
