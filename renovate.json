@@ -2,5 +2,27 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "helm-values": {
+    "enabled": false
+  },
+  "packageRules": [
+    {
+      "managers": ["helm-release"],
+      "groupName": "Flux Helm Releases"
+    }
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": [
+        ".*/helm-release.yaml$"
+      ],
+      "matchStrings": [
+        "chart:\\s*\\n(?:[\\s\\S]*?name:\\s*(?<depName>\\S+)[\\s\\S]*?version:\\s*(?<currentValue>\\S+))"
+      ],
+      "depNameTemplate": "{{depName}}",
+      "currentValueTemplate": "{{currentValue}}",
+      "datasourceTemplate": "helm"
+    }
   ]
 }
