@@ -3,7 +3,7 @@
   "extends": [
     "config:recommended"
   ],
-  "enabledManagers": ["flux", "helm"],
+  "enabledManagers": ["flux", "helmv3"],
   "flux": {
     "fileMatch": [
       "(^|/)infrastructure/.*\\.ya?ml$",
