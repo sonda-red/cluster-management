@@ -8,14 +8,17 @@
   },
   "packageRules": [
     {
-      "managers": ["helm-release"],
+      "matchManagers": [
+        "helm-release"
+      ],
       "groupName": "Flux Helm Releases"
     }
   ],
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": [
-        ".*/helm-release.yaml$"
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/.*/helm-release.yaml$/"
       ],
       "matchStrings": [
         "chart:\\s*\\n(?:[\\s\\S]*?name:\\s*(?<depName>\\S+)[\\s\\S]*?version:\\s*(?<currentValue>\\S+))"
