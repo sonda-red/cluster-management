@@ -29,7 +29,7 @@ metadata:
   namespace: intel
 spec:
   interval: 10m
-  path: ./deployments/gpu_plugin
+  path: ./deployments/gpu_plugin/overlays/nfd_labeled_nodes
   prune: true
   sourceRef:
     kind: GitRepository
