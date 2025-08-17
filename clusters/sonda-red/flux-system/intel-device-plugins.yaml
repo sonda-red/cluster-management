@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
-  url: https://github.com/intel/intel-device-plugins-for-kubernetes
+  url: https://github.com/intel/intel-device-plugins-for-kubernetes/deployments/gpu_plugin
   ref:
     tag: v0.32.1
 ---
