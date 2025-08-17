@@ -3,29 +3,12 @@
   "extends": [
     "config:recommended"
   ],
-  "helm-values": {
-    "enabled": false
-  },
-  "packageRules": [
-    {
-      "matchManagers": [
-        "helm-release"
-      ],
-      "groupName": "Flux Helm Releases"
+  "enabledManagers": ["flux", "helm"],
+  "flux": {
+    "fileMatch": [
+      "(^|/)infrastructure/.*\\.ya?ml$",
+      "(^|/)clusters/.*\\.ya?ml$",
+      "(^|/)templates/.*\\.ya?ml$"
+    ]
     }
-  ],
-  "customManagers": [
-    {
-      "customType": "regex",
-      "managerFilePatterns": [
-        "/.*/helm-release.yaml$/"
-      ],
-      "matchStrings": [
-        "chart:\\s*\\n(?:[\\s\\S]*?name:\\s*(?<depName>\\S+)[\\s\\S]*?version:\\s*(?<currentValue>\\S+))"
-      ],
-      "depNameTemplate": "{{depName}}",
-      "currentValueTemplate": "{{currentValue}}",
-      "datasourceTemplate": "helm"
-    }
-  ]
 }
