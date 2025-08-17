@@ -8,4 +8,4 @@ nodeSelector:
 tolerations:
   - key: "node-role.kubernetes.io/gpu"
     operator: "Exists"
-    effect: "NoSchedule"
+    effect: "PreferNoSchedule"
