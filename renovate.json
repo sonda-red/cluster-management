@@ -10,5 +10,6 @@
       "(^|/)clusters/.*\\.ya?ml$",
       "(^|/)templates/.*\\.ya?ml$"
     ]
-    }
+    },
+    "ignorePaths": ["templates/**"]
 }
