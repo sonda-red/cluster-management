@@ -19,7 +19,7 @@ spec:
         image: ghcr.io/kitops-ml/kitops-init:v1.7.0
         env:
         - name: MODELKIT_REF
-          value: harbor.sonda.red.local/sonda-red/smollm-135m-instruct:latest
+          value: "harbor.sonda.red.local/sonda-red/smollm-135m-instruct:latest"
         - name: UNPACK_PATH
           value: /data
         - name: UNPACK_FILTER
