@@ -11,9 +11,9 @@ spec:
     metadata:
       labels: { app.kubernetes.io/name: kit-test }
     spec:
-      # volumes:
-      # - name: modelkit
-      #   emptyDir: {}                       # swap with a PVC if you want persistence
+      volumes:
+      - name: llama-storage
+        emptyDir: {}                       # swap with a PVC if you want persistence
       # initContainers:
       # - name: kitops-init
       #   image: ghcr.io/kitops-ml/kitops-init:v1.7.0
