@@ -15,7 +15,7 @@ spec:
         emptyDir: {}                       # swap with a PVC if you want persistence
       initContainers:
       - name: kitops-init
-        image: ghcr.io/kitops-ml/kitops-init:latest
+        image: ghcr.io/kitops-ml/kitops-init:v1.7.0
         env:
         - name: MODELKIT_REF
           value: jozu.ml/jozu/llama3-8b:8B-instruct-q4_0
@@ -26,7 +26,7 @@ spec:
         volumeMounts: [{ name: modelkit, mountPath: /data }]
       containers:
       - name: vllm-kit-test
-        image: intel/vllm:xpu
+        image: intel/vllm:0.10.0-xpu
         args: ["vllm","serve","/data","--host","0.0.0.0","--port","8000","--served-model-name","llama3-8b-instruct"]
         ports: [{ containerPort: 8000 }]
         readinessProbe:
@@ -38,8 +38,8 @@ spec:
           initialDelaySeconds: 15
           periodSeconds: 10
         resources:
-          requests: { cpu: "4", memory: "16Gi", nvidia.com/gpu: 1 }
-          limits:   { cpu: "4", memory: "16Gi", nvidia.com/gpu: 1 }
+          requests: { cpu: "4", memory: "16Gi", gpu.intel.com/i915: 1 }
+          limits:   { cpu: "4", memory: "16Gi", gpu.intel.com/i915: 1 }
         volumeMounts: [{ name: modelkit, mountPath: /data }]
 ---
 apiVersion: v1
