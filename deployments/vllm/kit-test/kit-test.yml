@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kit-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app.kubernetes.io/name: kit-test }
+  template:
+    metadata:
+      labels: { app.kubernetes.io/name: kit-test }
+    spec:
+      volumes:
+      - name: modelkit
+        emptyDir: {}                       # swap with a PVC if you want persistence
+      initContainers:
+      - name: kitops-init
+        image: ghcr.io/kitops-ml/kitops-init:latest
+        env:
+        - name: MODELKIT_REF
+          value: jozu.ml/jozu/llama3-8b:8B-instruct-q4_0
+        - name: UNPACK_PATH
+          value: /data
+        - name: UNPACK_FILTER
+          value: model
+        volumeMounts: [{ name: modelkit, mountPath: /data }]
+      containers:
+      - name: vllm-kit-test
+        image: intel/vllm:xpu
+        args: ["vllm","serve","/data","--host","0.0.0.0","--port","8000","--served-model-name","llama3-8b-instruct"]
+        ports: [{ containerPort: 8000 }]
+        readinessProbe:
+          httpGet: { path: /health, port: 8000 }
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        livenessProbe:
+          httpGet: { path: /health, port: 8000 }
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        resources:
+          requests: { cpu: "4", memory: "16Gi", nvidia.com/gpu: 1 }
+          limits:   { cpu: "4", memory: "16Gi", nvidia.com/gpu: 1 }
+        volumeMounts: [{ name: modelkit, mountPath: /data }]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kit-test
+spec:
+  selector: { app.kubernetes.io/name: kit-test }
+  ports: [{ name: http, port: 8000, targetPort: 8000 }]
+  type: ClusterIP
