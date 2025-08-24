@@ -12,25 +12,23 @@ spec:
       labels: { app.kubernetes.io/name: kit-test }
     spec:
       volumes:
-      - name: llama-storage
+      - name: modelkit
         emptyDir: {}                       # swap with a PVC if you want persistence
-      # initContainers:
-      # - name: kitops-init
-      #   image: ghcr.io/kitops-ml/kitops-init:v1.7.0
-      #   env:
-      #   - name: MODELKIT_REF
-      #     value: jozu.ml/jozu/llama3-8b:8B-instruct-q4_0
-      #   - name: UNPACK_PATH
-      #     value: /data
-      #   - name: UNPACK_FILTER
-      #     value: model
-      #   volumeMounts: [{ name: modelkit, mountPath: /data }]
+      initContainers:
+      - name: kitops-init
+        image: ghcr.io/kitops-ml/kitops-init:v1.7.0
+        env:
+        - name: MODELKIT_REF
+          value: harbor.sonda.red.local/sonda-red/smollm-135m-instruct:latest
+        - name: UNPACK_PATH
+          value: /data
+        - name: UNPACK_FILTER
+          value: model
+        volumeMounts: [{ name: modelkit, mountPath: /data }]
       containers:
       - name: vllm-kit-test
         image: intel/vllm:0.10.0-xpu
-        args: ["serve","Qwen/Qwen3-0.6B","--host","0.0.0.0","--port","8000",
-         "--download-dir","/cache","--served-model-name","qwen3-0.6b","--dtype","bfloat16"]
-        # args: ["vllm","serve","/data","--host","0.0.0.0","--port","8000","--served-model-name","llama3-8b-instruct"]
+        args: ["vllm","--model","/data","--host","0.0.0.0","--port","8000","--served-model-name","smollm-135m-instruct"]
         ports: [{ containerPort: 8000 }]
         readinessProbe:
           httpGet: { path: /health, port: 8000 }
@@ -43,10 +41,7 @@ spec:
         resources:
           requests: { cpu: "4", memory: "16Gi", gpu.intel.com/i915: 1 }
           limits:   { cpu: "4", memory: "16Gi", gpu.intel.com/i915: 1 }
-        # volumeMounts: [{ name: modelkit, mountPath: /data }]
-        volumeMounts:
-          - name: llama-storage
-            mountPath: /cache
+        volumeMounts: [{ name: modelkit, mountPath: /data }]
 ---
 apiVersion: v1
 kind: Service
