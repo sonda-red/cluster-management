@@ -64,7 +64,6 @@ spec:
           # Make logs verbose for the engine
           - name: VLLM_LOGGING_LEVEL
             value: "DEBUG"
-        args: ["vllm","--model","/data","--host","0.0.0.0","--port","8000","--served-model-name","smollm-135m-instruct"]
         ports: [{ containerPort: 8000 }]
         startupProbe:
           tcpSocket: { port: 8000 }
