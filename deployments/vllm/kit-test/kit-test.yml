@@ -21,7 +21,8 @@ spec:
 
       volumes:
       - name: modelkit
-        emptyDir: {}                       # swap with a PVC if you want persistence
+        persistentVolumeClaim:
+          claimName: kit-test-modelkit
       initContainers:
       - name: kitops-init
         image: ghcr.io/kitops-ml/kitops-init:v1.7.0
@@ -97,3 +98,16 @@ spec:
   selector: { app.kubernetes.io/name: kit-test }
   ports: [{ name: http, port: 8000, targetPort: 8000 }]
   type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kit-test-modelkit
+  namespace: vllm
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "local-path"
+  resources:
+    requests:
+      storage: 10Gi
