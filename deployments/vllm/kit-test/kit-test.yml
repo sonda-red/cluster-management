@@ -23,6 +23,13 @@ spec:
       - name: modelkit
         persistentVolumeClaim:
           claimName: kit-test-modelkit
+      # - name: models
+      #   persistentVolumeClaim:
+      #     claimName: kit-test-models
+      - name: dshm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 8Gi
       initContainers:
       - name: kitops-init
         image: ghcr.io/kitops-ml/kitops-init:v1.7.0
@@ -34,52 +41,60 @@ spec:
         - name: UNPACK_FILTER
           value: model
         - name: EXTRA_FLAGS
-          value: "--tls-verify=false"
+          value: "--tls-verify=false -i"
         volumeMounts: [{ name: modelkit, mountPath: /data }]
       containers:
-      - name: vllm-kit-test
-        image: intel/vllm:0.10.0-xpu
-        command: ["vllm"]
-        args:
-            - --model /data
-            - --host 0.0.0.0
-            - --port 8000
-            - --served-model-name smollm-135m-instruct
-            - --dtype float32
-            - --enforce-eager
-            - --max-model-len 2048
-            - --gpu-memory-utilization 0.85
-            - --max-num-seqs 1
-        env:
-          # Intel XPU: disable Flash-Attention to avoid driver/kernel trips
-          - name: VLLM_XPU_FLASH_ATTENTION
-            value: "0"
-          # Make logs verbose for the engine
-          - name: VLLM_LOGGING_LEVEL
-            value: "DEBUG"
-        ports: [{ containerPort: 8000 }]
-        startupProbe:
-          tcpSocket: { port: 8000 }
-          periodSeconds: 5
-          failureThreshold: 120   # up to ~10min for cold start
-        readinessProbe:
-          httpGet: { path: /health, port: 8000 }
-          periodSeconds: 5
-          failureThreshold: 12
-        # Temporarily DISABLE liveness while debugging
-        livenessProbe: null
-        # readinessProbe:
-        #   httpGet: { path: /health, port: 8000 }
-        #   initialDelaySeconds: 5
-        #   periodSeconds: 5
-        # livenessProbe:
-        #   httpGet: { path: /health, port: 8000 }
-        #   initialDelaySeconds: 15
-        #   periodSeconds: 10
-        resources:
-          requests: { cpu: "6", memory: "16Gi", gpu.intel.com/i915: 1 }
-          limits:   { cpu: "6", memory: "16Gi", gpu.intel.com/i915: 1 }
-        volumeMounts: [{ name: modelkit, mountPath: /data }]
+        - name: vllm
+          image: intelanalytics/ipex-llm-serving-xpu:latest
+          # source oneCCL env then run the IPEX-LLM vLLM OpenAI server, like your script
+          command: ["/bin/bash","-lc"]
+          args:
+            - |
+              source /opt/intel/1ccl-wks/setvars.sh && \
+              python -m ipex_llm.vllm.xpu.entrypoints.openai.api_server \
+                --served-model-name smollm-135m-instruct \
+                --port 8000 \
+                --model /data \
+                --trust-remote-code \
+                --gpu-memory-utilization 0.90 \
+                --device xpu \
+                --dtype float16 \
+                --enforce-eager \
+                --load-in-low-bit fp8 \
+                --max-model-len 2048 \
+                --max-num-batched-tokens 4000 \
+                --max-num-seqs 12 \
+                --tensor-parallel-size 2 \
+                --distributed-executor-backend ray
+          env:
+            - { name: CCL_WORKER_COUNT, value: "2" }
+            - { name: SYCL_CACHE_PERSISTENT, value: "1" }
+            - { name: FI_PROVIDER, value: "shm" }
+            - { name: CCL_ATL_TRANSPORT, value: "ofi" }
+            - { name: CCL_ZE_IPC_EXCHANGE, value: "sockets" }
+            - { name: CCL_ATL_SHM, value: "1" }
+            - { name: ONEAPI_DEVICE_SELECTOR, value: "level_zero:gpu" }
+            - { name: USE_XETLA, value: "OFF" }
+            - { name: SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS, value: "2" }
+            - { name: TORCH_LLM_ALLREDUCE, value: "0" }
+            - { name: CCL_SAME_STREAM, value: "1" }
+            - { name: CCL_BLOCKING_WAIT, value: "0" }
+          ports: [{ containerPort: 8000 }]
+          volumeMounts:
+            - { name: modelkit, mountPath: /data }
+            # - { name: models, mountPath: /models }
+            - { name: dshm,   mountPath: /dev/shm }
+          resources:
+            requests: { cpu: "8", memory: "24Gi", gpu.intel.com/i915: 2 }
+            limits:   { cpu: "8", memory: "24Gi", gpu.intel.com/i915: 2 }
+          startupProbe:
+            tcpSocket: { port: 8000 }
+            periodSeconds: 10
+            failureThreshold: 120
+          readinessProbe:
+            httpGet: { path: /v1/models, port: 8000 }
+            periodSeconds: 5
+            failureThreshold: 12
 ---
 apiVersion: v1
 kind: Service
