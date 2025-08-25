@@ -41,23 +41,15 @@ spec:
         image: intel/vllm:0.10.0-xpu
         command: ["vllm"]
         args:
-          - --model
-          - /data
-          - --host
-          - 0.0.0.0
-          - --port
-          - "8000"
-          - --served-model-name
-          - smollm-135m-instruct
-          - --dtype
-          - float32
-          - --enforce-eager        # make it explicit
-          - --max-model-len
-          - "2048"
-          - --gpu-memory-utilization
-          - "0.85"
-          - --max-num-seqs         # reduce scheduler stress during debug
-          - "1"
+            - --model=/data
+            - --host=0.0.0.0
+            - --port=8000
+            - --served-model-name=smollm-135m-instruct
+            - --dtype=float32
+            - --enforce-eager        # make it explicit
+            - --max-model-len=2048
+            - --gpu-memory-utilization=0.85
+            - --max-num-seqs=1       # reduce scheduler stress during debug
         env:
           # Intel XPU: disable Flash-Attention to avoid driver/kernel trips
           - name: VLLM_XPU_FLASH_ATTENTION
