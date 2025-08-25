@@ -24,6 +24,8 @@ spec:
           value: /data
         - name: UNPACK_FILTER
           value: model
+        - name: EXTRA_FLAGS
+          value: "--tls-verify=false"
         volumeMounts: [{ name: modelkit, mountPath: /data }]
       containers:
       - name: vllm-kit-test
