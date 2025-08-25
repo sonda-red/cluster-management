@@ -56,14 +56,13 @@ spec:
                 --port 8000 \
                 --model /data \
                 --trust-remote-code \
-                --gpu-memory-utilization 0.85 \
+                --gpu-memory-utilization 0.8 \
                 --device xpu \
                 --dtype float16 \
                 --enforce-eager \
-                --load-in-low-bit fp8 \
-                --max-model-len 2048 \
-                --max-num-batched-tokens 2000 \
-                --max-num-seqs 4 \
+                --max-model-len 1024 \
+                --max-num-batched-tokens 1024 \
+                --max-num-seqs 2 \
                 --tensor-parallel-size 1
           env:
             - { name: CCL_WORKER_COUNT, value: "1" }
