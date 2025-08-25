@@ -5,6 +5,7 @@ resources:
   - namespace.yaml
   - helm-repository.yaml
   - helm-release.yaml
+  - internal-ingress.yaml
 configMapGenerator:
   - name: harbor-values
     files:

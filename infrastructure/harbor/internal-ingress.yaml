@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: harbor-internal
+  namespace: harbor
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: harbor-internal.sonda.red.local
+    http:
+      paths:
+      - path: /v2/
+        pathType: Prefix
+        backend: { service: { name: harbor-registry, port: { number: 5000 } } }
+      - path: /api/
+        pathType: Prefix
+        backend: { service: { name: harbor-core, port: { number: 80 } } }
+      - path: /service/
+        pathType: Prefix
+        backend: { service: { name: harbor-core, port: { number: 80 } } }
+      - path: /
+        pathType: Prefix
+        backend: { service: { name: harbor-portal, port: { number: 80 } } }
