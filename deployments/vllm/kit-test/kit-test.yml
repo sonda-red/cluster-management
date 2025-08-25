@@ -40,14 +40,24 @@ spec:
         image: intel/vllm:0.10.0-xpu
         args: ["vllm","--model","/data","--host","0.0.0.0","--port","8000","--served-model-name","smollm-135m-instruct"]
         ports: [{ containerPort: 8000 }]
+        startupProbe:
+          tcpSocket: { port: 8000 }
+          periodSeconds: 5
+          failureThreshold: 120   # up to ~10min for cold start
         readinessProbe:
           httpGet: { path: /health, port: 8000 }
-          initialDelaySeconds: 5
           periodSeconds: 5
-        livenessProbe:
-          httpGet: { path: /health, port: 8000 }
-          initialDelaySeconds: 15
-          periodSeconds: 10
+          failureThreshold: 12
+        # Temporarily DISABLE liveness while debugging
+        livenessProbe: null
+        # readinessProbe:
+        #   httpGet: { path: /health, port: 8000 }
+        #   initialDelaySeconds: 5
+        #   periodSeconds: 5
+        # livenessProbe:
+        #   httpGet: { path: /health, port: 8000 }
+        #   initialDelaySeconds: 15
+        #   periodSeconds: 10
         resources:
           requests: { cpu: "6", memory: "16Gi", gpu.intel.com/i915: 1 }
           limits:   { cpu: "6", memory: "16Gi", gpu.intel.com/i915: 1 }
