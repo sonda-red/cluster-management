@@ -46,10 +46,10 @@ spec:
             - --port=8000
             - --served-model-name=smollm-135m-instruct
             - --dtype=float32
-            - --enforce-eager        # make it explicit
+            - --enforce-eager
             - --max-model-len=2048
             - --gpu-memory-utilization=0.85
-            - --max-num-seqs=1       # reduce scheduler stress during debug
+            - --max-num-seqs=1
         env:
           # Intel XPU: disable Flash-Attention to avoid driver/kernel trips
           - name: VLLM_XPU_FLASH_ATTENTION
