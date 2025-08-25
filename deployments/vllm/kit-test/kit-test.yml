@@ -56,18 +56,17 @@ spec:
                 --port 8000 \
                 --model /data \
                 --trust-remote-code \
-                --gpu-memory-utilization 0.90 \
+                --gpu-memory-utilization 0.85 \
                 --device xpu \
                 --dtype float16 \
                 --enforce-eager \
                 --load-in-low-bit fp8 \
                 --max-model-len 2048 \
-                --max-num-batched-tokens 4000 \
-                --max-num-seqs 12 \
-                --tensor-parallel-size 2 \
-                --distributed-executor-backend ray
+                --max-num-batched-tokens 2000 \
+                --max-num-seqs 4 \
+                --tensor-parallel-size 1
           env:
-            - { name: CCL_WORKER_COUNT, value: "2" }
+            - { name: CCL_WORKER_COUNT, value: "1" }
             - { name: SYCL_CACHE_PERSISTENT, value: "1" }
             - { name: FI_PROVIDER, value: "shm" }
             - { name: CCL_ATL_TRANSPORT, value: "ofi" }
@@ -85,8 +84,8 @@ spec:
             # - { name: models, mountPath: /models }
             - { name: dshm,   mountPath: /dev/shm }
           resources:
-            requests: { cpu: "8", memory: "24Gi", gpu.intel.com/i915: 2 }
-            limits:   { cpu: "8", memory: "24Gi", gpu.intel.com/i915: 2 }
+            requests: { cpu: "4", memory: "12Gi", gpu.intel.com/i915: 1 }
+            limits:   { cpu: "4", memory: "12Gi", gpu.intel.com/i915: 1 }
           startupProbe:
             tcpSocket: { port: 8000 }
             periodSeconds: 10
