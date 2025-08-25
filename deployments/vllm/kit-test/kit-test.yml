@@ -11,6 +11,14 @@ spec:
     metadata:
       labels: { app.kubernetes.io/name: kit-test }
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: sonda-core
+      tolerations:
+        - key: "dedicated"
+          operator: "Equal"
+          value: "gpu"
+          effect: "PreferNoSchedule"
+
       volumes:
       - name: modelkit
         emptyDir: {}                       # swap with a PVC if you want persistence
@@ -41,8 +49,8 @@ spec:
           initialDelaySeconds: 15
           periodSeconds: 10
         resources:
-          requests: { cpu: "4", memory: "16Gi", gpu.intel.com/i915: 1 }
-          limits:   { cpu: "4", memory: "16Gi", gpu.intel.com/i915: 1 }
+          requests: { cpu: "6", memory: "16Gi", gpu.intel.com/i915: 1 }
+          limits:   { cpu: "6", memory: "16Gi", gpu.intel.com/i915: 1 }
         volumeMounts: [{ name: modelkit, mountPath: /data }]
 ---
 apiVersion: v1
