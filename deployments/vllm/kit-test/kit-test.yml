@@ -41,7 +41,7 @@ spec:
         - name: UNPACK_FILTER
           value: model
         - name: EXTRA_FLAGS
-          value: "--tls-verify=false -i"
+          value: "--tls-verify=false -i --concurrency 1 --progress fancy"
         volumeMounts: [{ name: modelkit, mountPath: /data }]
       containers:
         - name: vllm
@@ -115,4 +115,4 @@ spec:
   storageClassName: "local-path"
   resources:
     requests:
-      storage: 10Gi
+      storage: 50Gi
