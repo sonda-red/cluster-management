@@ -63,3 +63,11 @@ registry:
       operator: "Equal"
       value: "gpu"
       effect: "PreferNoSchedule"
+core:
+  nodeSelector:
+    kubernetes.io/hostname: sonda-core
+  tolerations:
+    - key: "dedicated"
+      operator: "Equal"
+      value: "gpu"
+      effect: "PreferNoSchedule"
