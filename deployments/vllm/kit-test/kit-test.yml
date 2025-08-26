@@ -35,7 +35,7 @@ spec:
         image: ghcr.io/kitops-ml/kitops-init:v1.7.0
         env:
         - name: MODELKIT_REF
-          value: "harbor.sonda.red.local/sonda-red/smollm-135m-instruct:latest"
+          value: "harbor.sonda.red.local/sonda-red/ds-r1-qwen-1.5b:0.0.1"
         - name: UNPACK_PATH
           value: /data
         - name: UNPACK_FILTER
@@ -52,7 +52,7 @@ spec:
             - |
               source /opt/intel/1ccl-wks/setvars.sh && \
               python -m ipex_llm.vllm.xpu.entrypoints.openai.api_server \
-                --served-model-name smollm-135m-instruct \
+                --served-model-name ds-r1-qwen-1.5b \
                 --port 8000 \
                 --model /data \
                 --trust-remote-code \
