@@ -55,3 +55,11 @@ expose:
       nginx.ingress.kubernetes.io/proxy-send-timeout: "7200"
     # ingress-specific labels
     labels: {}
+registry:
+  nodeSelector:
+    kubernetes.io/hostname: sonda-core
+  tolerations:
+    - key: "dedicated"
+      operator: "Equal"
+      value: "gpu"
+      effect: "PreferNoSchedule"
