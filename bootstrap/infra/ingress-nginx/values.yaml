@@ -1,5 +1,7 @@
 controller:
-  kind: Deployment
+  kind: DaemonSet
+  service:
+    externalTrafficPolicy: Local
   stats:
     enabled: true
   config:
@@ -7,6 +9,11 @@ controller:
     use-forwarded-headers: "true"
     compute-full-forwarded-for: "true"
     use-proxy-protocol: "false"
+    proxy-read-timeout: "7200"
+    proxy-send-timeout: "7200"
+    keep-alive: "300"
+    proxy-request-buffering: "off"
+    proxy-body-size: "0"  
   ingressClassResource:
     # -- If true, Ingresses without `ingressClassName` get assigned to this IngressClass on creation.
     # Ingress creation gets rejected if there are multiple default IngressClasses.
