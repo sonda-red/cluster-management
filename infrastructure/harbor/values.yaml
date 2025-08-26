@@ -48,5 +48,10 @@ expose:
       nginx.ingress.kubernetes.io/ssl-redirect: "true"
       nginx.ingress.kubernetes.io/proxy-body-size: "0"
       cert-manager.io/cluster-issuer: sonda-red-local
+      nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+      nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+      nginx.ingress.kubernetes.io/client-body-timeout: "7200"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "7200"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "7200"
     # ingress-specific labels
     labels: {}
