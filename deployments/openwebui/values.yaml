@@ -85,7 +85,7 @@ ingress:
   #   nginx.ingress.kubernetes.io/permanent-redirect: "https://chat.example.com"
   #   networking.gke.io/managed-certificates: "mydomain-chat-cert"
   #   # nginx.ingress.kubernetes.io/rewrite-target: /
-  host: "chat.sonda.red.local" # update to your real domain
+  host: "chat.sonda.red.local"
   additionalHosts: []
   tls: true
   existingSecret: ""
