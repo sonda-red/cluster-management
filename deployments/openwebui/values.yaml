@@ -13,6 +13,8 @@ websocket:
   manager: redis
   # -- Node selector for websocket pods
   nodeSelector: {}
+  redis:
+    enabled: false
 
 
 annotations: {}
