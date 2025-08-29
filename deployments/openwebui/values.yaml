@@ -105,6 +105,19 @@ persistence:
   annotations: {}
   # -- Sets the storage provider, availables values are `local`, `s3`, `gcs` or `azure`
   provider: s3
+  s3:
+    # -- Set the secret access key for S3 storage from existing k8s secret
+    # @section -- Amazon S3 Storage configuration
+    accessKeyExistingSecret: {}
+    # -- Set the secret access key for S3 storage from existing k8s secret key
+    # @section -- Amazon S3 Storage configuration
+    accessKeyExistingAccessKey: {}
+    # -- Set the secret key for S3 storage from existing k8s secret
+    # @section -- Amazon S3 Storage configuration
+    secretKeyExistingSecret: {}
+    # -- Set the secret key for S3 storage from existing k8s secret key
+    # @section -- Amazon S3 Storage configuration
+    secretKeyExistingSecretKey: {}
 
 # -- Node labels for pod assignment.
 nodeSelector: {}
