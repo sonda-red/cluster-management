@@ -9,20 +9,33 @@
     "helmv3"
   ],
   "flux": {
-    "fileMatch": ["(^|/)infrastructure/.*\\.ya?ml$", "(^|/)clusters/.*\\.ya?ml$", "(^|/)deployments/.*\\.ya?ml$"]
+    "managerFilePatterns": [
+      "/(^|/)infrastructure/.*\\.ya?ml$/",
+      "/(^|/)clusters/.*\\.ya?ml$/",
+      "/(^|/)deployments/.*\\.ya?ml$/"
+    ]
   },
   "helm-values": {
-    "fileMatch": ["(^|/)infrastructure/.*\\.ya?ml$", "(^|/)deployments/.*\\.ya?ml$"]
+    "managerFilePatterns": [
+      "/(^|/)infrastructure/.*\\.ya?ml$/",
+      "/(^|/)deployments/.*\\.ya?ml$/"
+    ]
   },
   "ignorePaths": [
     "templates/**",
     "reserve/**"
   ],
-  "schedule": ["every weekend"],
+  "schedule": [
+    "every weekend"
+  ],
   "packageRules": [
     {
       "description": "Require approval for all updates initially",
-      "matchUpdateTypes": ["major", "minor", "patch"],
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch"
+      ],
       "dependencyDashboardApproval": true
     },
     {
@@ -38,17 +51,25 @@
     },
     {
       "description": "Group Intel device plugins",
-      "matchFileNames": ["infrastructure/nfd/**", "infrastructure/intel-*/**"],
+      "matchFileNames": [
+        "infrastructure/nfd/**",
+        "infrastructure/intel-*/**"
+      ],
       "groupName": "intel-device-plugins"
     },
     {
       "description": "Group AI/ML deployments",
-      "matchFileNames": ["deployments/openwebui/**", "deployments/vllm/**"],
+      "matchFileNames": [
+        "deployments/openwebui/**",
+        "deployments/vllm/**"
+      ],
       "groupName": "ai-ml-stack"
     },
     {
       "description": "Disable k3s version updates (manual control)",
-      "matchFileNames": ["infrastructure/system-upgrade-controller-plan/**"],
+      "matchFileNames": [
+        "infrastructure/system-upgrade-controller-plan/**"
+      ],
       "enabled": false
     }
   ],
@@ -56,7 +77,9 @@
     {
       "customType": "regex",
       "description": "Update XPU Manager Git tags",
-      "fileMatch": ["(^|/)infrastructure/.*\\.ya?ml$"],
+      "managerFilePatterns": [
+        "/(^|/)infrastructure/.*\\.ya?ml$/"
+      ],
       "matchStrings": [
         "kind: GitRepository[\\s\\S]*?name:\\s*[\"']?xpumanager[\"'][\\s\\S]*?tag:\\s*[\"']?(?<currentValue>v?[0-9]+\\.[0-9]+\\.[0-9]+[^\\s\"']*)[\"']?"
       ],
