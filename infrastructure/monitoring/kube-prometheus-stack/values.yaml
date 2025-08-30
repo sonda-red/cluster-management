@@ -53,6 +53,9 @@ grafana:
       victorialogs-explorer:
         gnetId: 22759
         datasource: VictoriaLogs
+      intel-xpu-manager:
+        url: https://raw.githubusercontent.com/intel/xpumanager/V1.3.2/deployment/kubernetes/monitoring/grafana-dashboard.json
+        datasource: Prometheus
 prometheus:
   prometheusSpec:
     retention: 1d
@@ -65,6 +68,12 @@ prometheus:
           resources:
             requests:
               storage: 10Gi
+    # Enable cross-namespace ServiceMonitor discovery for XPU metrics
+    serviceMonitorNamespaceSelector: {}
+    # Enable cross-namespace PodMonitor discovery
+    podMonitorNamespaceSelector: {}
+    # Enable cross-namespace PrometheusRule discovery
+    ruleNamespaceSelector: {}
   ingress:
     enabled: true
     hosts:
