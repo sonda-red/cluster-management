@@ -1,20 +1,68 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    ":dependencyDashboard"
   ],
   "enabledManagers": [
     "flux",
     "helmv3"
   ],
   "flux": {
-    "managerFilePatterns": [
-      "/(^|/)infrastructure/.*\\.ya?ml$/",
-      "/(^|/)clusters/.*\\.ya?ml$/",
-      "/(^|/)templates/.*\\.ya?ml$/"
-    ]
+    "fileMatch": ["(^|/)infrastructure/.*\\.ya?ml$", "(^|/)clusters/.*\\.ya?ml$", "(^|/)deployments/.*\\.ya?ml$"]
+  },
+  "helm-values": {
+    "fileMatch": ["(^|/)infrastructure/.*\\.ya?ml$", "(^|/)deployments/.*\\.ya?ml$"]
   },
   "ignorePaths": [
-    "templates/**"
+    "templates/**",
+    "reserve/**"
+  ],
+  "schedule": ["every weekend"],
+  "packageRules": [
+    {
+      "description": "Require approval for all updates initially",
+      "matchUpdateTypes": ["major", "minor", "patch"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Group Prometheus stack updates",
+      "matchPackageNames": [
+        "kube-prometheus-stack",
+        "prometheus-operator",
+        "prometheus",
+        "alertmanager",
+        "grafana"
+      ],
+      "groupName": "prometheus-stack"
+    },
+    {
+      "description": "Group Intel device plugins",
+      "matchFileNames": ["infrastructure/nfd/**", "infrastructure/intel-*/**"],
+      "groupName": "intel-device-plugins"
+    },
+    {
+      "description": "Group AI/ML deployments",
+      "matchFileNames": ["deployments/openwebui/**", "deployments/vllm/**"],
+      "groupName": "ai-ml-stack"
+    },
+    {
+      "description": "Disable k3s version updates (manual control)",
+      "matchFileNames": ["infrastructure/system-upgrade-controller-plan/**"],
+      "enabled": false
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update Git tags in Flux GitRepository resources",
+      "fileMatch": ["(^|/)infrastructure/.*\\.ya?ml$"],
+      "matchStrings": [
+        "kind: GitRepository[\\s\\S]*?name:\\s*[\"']?(?<repo>k3s|xpumanager)[\"'][\\s\\S]*?tag:\\s*[\"']?(?<currentValue>v?[0-9]+\\.[0-9]+\\.[0-9]+[^\\s\"']*)[\"']?"
+      ],
+      "datasourceTemplate": "github-tags",
+      "depNameTemplate": "{{#eq repo 'k3s'}}k3s-io/k3s{{else}}{{#eq repo 'xpumanager'}}intel/xpumanager{{/eq}}{{/eq}}",
+      "autoReplaceStringTemplate": "tag: {{newValue}}"
+    }
   ]
 }
