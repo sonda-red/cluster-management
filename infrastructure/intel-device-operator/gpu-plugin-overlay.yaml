@@ -53,12 +53,12 @@ spec:
             - "-enable-monitoring"
             # Temperature limit at which device is marked unhealthy (default: 100C)
             # Lower values provide more conservative thermal management
-            - "-temp-limit"
-            - "85"
+            # - "-temp-limit"
+            # - "85"
             # GPU allocation policy for shared-dev-num > 1 (default: none)
             # Options: balanced (spreads workloads), packed (fills one GPU first), none (first available)
-            - "-allocation-policy"
-            - "balanced"
+            # - "-allocation-policy"
+            # - "balanced"
       target:
         kind: DaemonSet
         name: intel-gpu-plugin
