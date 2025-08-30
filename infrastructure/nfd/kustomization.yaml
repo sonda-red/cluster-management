@@ -5,6 +5,7 @@ resources:
   - namespace.yaml
   - helm-repository.yaml
   - helm-release.yaml
+  - intel-device-plugins.yaml
 configMapGenerator:
   - name: nfd-values
     files:
