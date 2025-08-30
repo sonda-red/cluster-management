@@ -7,3 +7,7 @@ resources:
 
 # Ensure all resources are deployed to the intel namespace
 namespace: intel
+
+# Patch the DaemonSet to make probes more forgiving
+patchesStrategicMerge:
+  - daemonset-patch.yaml
