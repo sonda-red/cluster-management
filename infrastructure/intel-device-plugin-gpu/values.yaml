@@ -1,7 +1,0 @@
-nodeFeatureRule: true
-sharedDevNum: 10
-resourceManager: false
-tolerations:
-  - key: "node-role.kubernetes.io/gpu"
-    operator: "Exists"
-    effect: "PreferNoSchedule"
