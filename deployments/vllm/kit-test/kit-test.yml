@@ -83,8 +83,8 @@ spec:
             # - { name: models, mountPath: /models }
             - { name: dshm,   mountPath: /dev/shm }
           resources:
-            requests: { cpu: "4", memory: "20Gi", gpu.intel.com/i915: 1 }
-            limits:   { cpu: "4", memory: "24Gi", gpu.intel.com/i915: 1 }
+            requests: { cpu: "6", memory: "20Gi", gpu.intel.com/i915: 1 }
+            limits:   { cpu: "10", memory: "24Gi", gpu.intel.com/i915: 1 }
           startupProbe:
             tcpSocket: { port: 8000 }
             periodSeconds: 10
