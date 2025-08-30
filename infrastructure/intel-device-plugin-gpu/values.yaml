@@ -1,1 +1,3 @@
 nodeFeatureRule: true
+sharedDevNum: 4
+resourceManager: true
