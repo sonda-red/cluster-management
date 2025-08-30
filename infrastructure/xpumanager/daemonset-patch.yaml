@@ -13,6 +13,8 @@ spec:
       #   kubernetes.io/hostname: sonda-02
       containers:
       - name: xpumd
+        # Use custom XPU Manager image
+        image: ghcr.io/soliddowant/xpumanager:1.2.41
         # Add privileged access for hardware interaction
         securityContext:
           privileged: true

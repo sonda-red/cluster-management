@@ -9,5 +9,5 @@ resources:
 namespace: intel
 
 # Patch the DaemonSet to make probes more forgiving
-# patchesStrategicMerge:
-#   - daemonset-patch.yaml
+patchesStrategicMerge:
+  - daemonset-patch.yaml
