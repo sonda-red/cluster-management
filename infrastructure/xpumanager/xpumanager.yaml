@@ -22,3 +22,11 @@ spec:
     kind: GitRepository
     name: xpumanager
   targetNamespace: intel
+  patches:
+  - patch: |
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: ghcr.io/soliddowant/xpumanager:1.2.41
+    target:
+      kind: DaemonSet
+      name: intel-xpumanager

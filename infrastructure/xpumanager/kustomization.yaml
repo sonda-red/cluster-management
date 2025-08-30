@@ -7,13 +7,3 @@ resources:
 
 # Ensure all resources are deployed to the intel namespace
 namespace: intel
-
-# Use JSON patches for more reliable patching - target any DaemonSet
-patches:
-- target:
-    kind: DaemonSet
-    name: intel-xpumanager
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/containers/0/image
-      value: ghcr.io/soliddowant/xpumanager:1.2.41
