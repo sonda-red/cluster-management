@@ -22,14 +22,3 @@ spec:
     kind: GitRepository
     name: xpumanager
   targetNamespace: intel
----
-apiVersion: source.toolkit.fluxcd.io/v1beta2
-kind: GitRepository
-metadata:
-  name: xpumanager-monitoring
-  namespace: intel
-spec:
-  interval: 10m
-  url: https://github.com/intel/xpumanager
-  ref:
-    tag: V1.3.2
