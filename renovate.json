@@ -55,13 +55,13 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Update Git tags in Flux GitRepository resources",
+      "description": "Update XPU Manager Git tags",
       "fileMatch": ["(^|/)infrastructure/.*\\.ya?ml$"],
       "matchStrings": [
-        "kind: GitRepository[\\s\\S]*?name:\\s*[\"']?(?<repo>k3s|xpumanager)[\"'][\\s\\S]*?tag:\\s*[\"']?(?<currentValue>v?[0-9]+\\.[0-9]+\\.[0-9]+[^\\s\"']*)[\"']?"
+        "kind: GitRepository[\\s\\S]*?name:\\s*[\"']?xpumanager[\"'][\\s\\S]*?tag:\\s*[\"']?(?<currentValue>v?[0-9]+\\.[0-9]+\\.[0-9]+[^\\s\"']*)[\"']?"
       ],
       "datasourceTemplate": "github-tags",
-      "depNameTemplate": "{{#eq repo 'k3s'}}k3s-io/k3s{{else}}{{#eq repo 'xpumanager'}}intel/xpumanager{{/eq}}{{/eq}}",
+      "depNameTemplate": "intel/xpumanager",
       "autoReplaceStringTemplate": "tag: {{newValue}}"
     }
   ]
