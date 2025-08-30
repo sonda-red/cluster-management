@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - upgrade-plan.yml
   - system-upgrade-controller.yaml
+  - namespace.yaml
