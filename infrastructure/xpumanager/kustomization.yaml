@@ -8,6 +8,11 @@ resources:
 # Ensure all resources are deployed to the intel namespace
 namespace: intel
 
-# Patch the DaemonSet to make probes more forgiving
-patchesStrategicMerge:
-  - daemonset-patch.yaml
+# Use JSON patches for more reliable patching - target any DaemonSet
+patches:
+- target:
+    kind: DaemonSet
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/image
+      value: ghcr.io/soliddowant/xpumanager:1.2.41
