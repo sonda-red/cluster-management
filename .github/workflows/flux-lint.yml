@@ -1,0 +1,45 @@
+name: Flux Lint and Validate
+
+on:
+  pull_request:
+    paths:
+    - 'infrastructure/**'
+    - 'deployments/**'
+    - 'clusters/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Flux CLI
+      uses: fluxcd/flux2/action@main
+      
+    - name: Validate Flux resources
+      run: |
+        echo "🔍 Validating Flux resources..."
+        find . -name "*.yaml" \( -path "./infrastructure/*" -o -path "./deployments/*" -o -path "./clusters/*" \) | \
+        while read file; do
+          if flux validate "$file" 2>/dev/null; then
+            echo "✅ $file"
+          else
+            echo "❌ $file"
+            exit 1
+          fi
+        done
+        
+    - name: Test Kustomize builds
+      run: |
+        echo "🔨 Testing Kustomize builds..."
+        find . -name "kustomization.yaml" | while read kfile; do
+          dir=$(dirname "$kfile")
+          echo "Building $dir..."
+          if kustomize build "$dir" > /dev/null; then
+            echo "✅ $dir"
+          else
+            echo "❌ $dir"
+            exit 1
+          fi
+        done
