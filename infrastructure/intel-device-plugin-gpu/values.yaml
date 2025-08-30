@@ -1,6 +1,6 @@
 nodeFeatureRule: true
 sharedDevNum: 4
-resourceManager: true
+resourceManager: false
 tolerations:
   - key: "node-role.kubernetes.io/gpu"
     operator: "Exists"
