@@ -33,24 +33,3 @@ spec:
   url: https://github.com/intel/xpumanager
   ref:
     tag: V1.3.2
-  include:
-    - repository:
-        name: "*"
-      fromPath: "deployment/kubernetes/monitoring/service-intel-xpum.yaml"
-    - repository:
-        name: "*"
-      fromPath: "deployment/kubernetes/monitoring/servicemonitor-intel-xpum.yaml"
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-kind: Kustomization
-metadata:
-  name: xpumanager-monitoring-resources
-  namespace: intel
-spec:
-  interval: 10m
-  path: ./de
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: xpumanager-monitoring
-  targetNamespace: monitoring
