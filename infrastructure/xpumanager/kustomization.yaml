@@ -12,6 +12,7 @@ namespace: intel
 patches:
 - target:
     kind: DaemonSet
+    name: intel-xpumanager
   patch: |-
     - op: replace
       path: /spec/template/spec/containers/0/image
