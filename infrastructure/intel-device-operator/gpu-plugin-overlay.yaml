@@ -59,6 +59,10 @@ spec:
             # Options: balanced (spreads workloads), packed (fills one GPU first), none (first available)
             # - "-allocation-policy"
             # - "balanced"
+        - op: add
+          path: /spec/template/spec/nodeSelector
+          value:
+            kubernetes.io/hostname: sonda-core
       target:
         kind: DaemonSet
         name: intel-gpu-plugin
