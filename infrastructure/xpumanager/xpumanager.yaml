@@ -21,6 +21,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: xpumanager
+  targetNamespace: intel
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: GitRepository
@@ -52,3 +53,4 @@ spec:
   sourceRef:
     kind: GitRepository
     name: xpumanager-monitoring
+  targetNamespace: monitoring
