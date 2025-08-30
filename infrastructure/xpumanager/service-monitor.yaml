@@ -2,16 +2,18 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: intel-xpumanager
+  namespace: monitoring          # <- set to your Prometheus Operator ns
   labels:
-    app: intel-xpumanager
+     release: kube-prometheus-stack   # uncomment if your Prometheus selects by this
 spec:
+  namespaceSelector:
+    matchNames: [intel]
   selector:
     matchLabels:
       app: intel-xpumanager
-  namespaceSelector:
-    matchNames:
-      - intel
   endpoints:
     - port: metrics
       path: /metrics
       interval: 5s
+      scrapeTimeout: 10s
+      honorLabels: true
