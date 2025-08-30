@@ -36,3 +36,29 @@ spec:
     kind: GitRepository
     name: intel-device-plugins
   targetNamespace: intel
+  patches:
+    - patch: |
+        - op: replace
+          path: /spec/template/spec/containers/0/args
+          value:
+            # Enable GPU health management via oneAPI/Level-Zero interface
+            # Requires GPU Level-Zero sidecar, reports device as unhealthy if memory/bus issues or temp over limit
+            - "-health-management"
+            # Number of containers that can share the same GPU device (default: 1)
+            # Higher values allow more workloads to share GPU resources
+            - "-shared-dev-num"
+            - "10"
+            # Enable '*_monitoring' resource that provides access to all Intel GPU devices on the node
+            # Useful for metrics collection with tools like XPU Manager or Prometheus
+            - "-enable-monitoring"
+            # Temperature limit at which device is marked unhealthy (default: 100C)
+            # Lower values provide more conservative thermal management
+            - "-temp-limit"
+            - "85"
+            # GPU allocation policy for shared-dev-num > 1 (default: none)
+            # Options: balanced (spreads workloads), packed (fills one GPU first), none (first available)
+            - "-allocation-policy"
+            - "balanced"
+      target:
+        kind: DaemonSet
+        name: intel-gpu-plugin
