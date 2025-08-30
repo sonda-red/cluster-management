@@ -1,5 +1,5 @@
 nodeFeatureRule: true
-sharedDevNum: 4
+sharedDevNum: 10
 resourceManager: false
 tolerations:
   - key: "node-role.kubernetes.io/gpu"
