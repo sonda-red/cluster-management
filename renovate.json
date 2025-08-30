@@ -58,10 +58,10 @@
       "description": "Update Git tags in Flux GitRepository resources",
       "fileMatch": ["(^|/)infrastructure/.*\\.ya?ml$"],
       "matchStrings": [
-        "kind: GitRepository[\\s\\S]*?tag:\\s*[\"']?(?<currentValue>v?[0-9]+\\.[0-9]+\\.[0-9]+[^\\s\"']*)[\"']?"
+        "kind: GitRepository[\\s\\S]*?name:\\s*[\"']?(?<repo>k3s|xpumanager)[\"'][\\s\\S]*?tag:\\s*[\"']?(?<currentValue>v?[0-9]+\\.[0-9]+\\.[0-9]+[^\\s\"']*)[\"']?"
       ],
       "datasourceTemplate": "github-tags",
-      "depNameTemplate": "{{#if (containsString currentValue 'k3s')}}k3s-io/k3s{{else}}intel/xpumanager{{/if}}",
+      "depNameTemplate": "{{#eq repo 'k3s'}}k3s-io/k3s{{else}}{{#eq repo 'xpumanager'}}intel/xpumanager{{/eq}}{{/eq}}",
       "autoReplaceStringTemplate": "tag: {{newValue}}"
     }
   ]
