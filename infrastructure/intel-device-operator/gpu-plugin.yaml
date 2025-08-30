@@ -1,38 +1,11 @@
-apiVersion: source.toolkit.fluxcd.io/v1beta2
-kind: GitRepository
+apiVersion: deviceplugin.intel.com/v1
+kind: GpuDevicePlugin
 metadata:
-  name: intel-device-plugins
-  namespace: intel
+  name: gpudeviceplugin
 spec:
-  interval: 10m
-  url: https://github.com/intel/intel-device-plugins-for-kubernetes
-  ref:
-    tag: v0.32.1
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-kind: Kustomization
-metadata:
-  name: gpu-plugin
-  namespace: intel
-spec:
-  interval: 10m
-  path: ./deployments/gpu_plugin
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: intel-device-plugins
-  targetNamespace: intel
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-kind: Kustomization
-metadata:
-  name: gpu-plugin-overlay
-  namespace: intel
-spec:
-  interval: 10m
-  path: ./deployments/gpu_plugin/overlays/health
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: intel-device-plugins
-  targetNamespace: intel
+  image: intel/intel-gpu-plugin:0.32.0
+  sharedDevNum: 10
+  logLevel: 4
+  enableMonitoring: true
+  nodeSelector:
+    intel.feature.node.kubernetes.io/gpu: "true"
