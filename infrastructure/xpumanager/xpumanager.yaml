@@ -33,8 +33,12 @@ spec:
   ref:
     tag: V1.3.2
   include:
-    - fromPath: "deployment/kubernetes/monitoring/service-intel-xpum.yaml"
-    - fromPath: "deployment/kubernetes/monitoring/servicemonitor-intel-xpum.yaml"
+    - repository:
+        name: "*"
+      fromPath: "deployment/kubernetes/monitoring/service-intel-xpum.yaml"
+    - repository:
+        name: "*"
+      fromPath: "deployment/kubernetes/monitoring/servicemonitor-intel-xpum.yaml"
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -43,7 +47,7 @@ metadata:
   namespace: intel
 spec:
   interval: 10m
-  path: ./
+  path: ./de
   prune: true
   sourceRef:
     kind: GitRepository
