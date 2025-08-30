@@ -5,35 +5,91 @@ metadata:
 spec:
   template:
     spec:
+      # Only run on nodes with Intel GPU hardware
+      nodeSelector:
+        intel.feature.node.kubernetes.io/gpu: "true"  # Intel GPU present
+      # Alternative: specific node selector if needed
+      # nodeSelector:
+      #   kubernetes.io/hostname: sonda-02
       containers:
       - name: xpumd
+        # Add privileged access for hardware interaction
+        securityContext:
+          privileged: true
+          # Allow access to all devices
+          capabilities:
+            add:
+            - SYS_ADMIN
+        # Mount host devices and driver paths
+        volumeMounts:
+        - name: dev-dri
+          mountPath: /dev/dri
+        - name: sys-class-drm
+          mountPath: /sys/class/drm
+          readOnly: true
+        - name: sys-devices
+          mountPath: /sys/devices
+          readOnly: true
+        - name: usr-lib
+          mountPath: /usr/lib/x86_64-linux-gnu
+          readOnly: true
+        # Environment variables for Level Zero
+        env:
+        - name: ZE_ENABLE_ALT_DRIVERS
+          value: "1"
+        - name: ZE_ENABLE_VALIDATION_LAYER
+          value: "0"
+        - name: ZE_ENABLE_LOGGING
+          value: "1"
+        - name: NEO_CACHE_PERSISTENT
+          value: "0"
+        - name: ZE_ENABLE_PARAMETER_VALIDATION
+          value: "1"
         startupProbe:
           httpGet:
             path: /metrics
             port: 29999
           # Make startup probe more forgiving
-          initialDelaySeconds: 30        # Wait 30s before first check (default: 0)
-          periodSeconds: 10              # Check every 10s (default: 10)
-          timeoutSeconds: 5              # 5s timeout per check (default: 1)
-          successThreshold: 1            # 1 success needed (default: 1)
-          failureThreshold: 6            # Allow 6 failures = 60s total (default: 3)
+          initialDelaySeconds: 60        # Wait 60s for hardware init
+          periodSeconds: 10              # Check every 10s
+          timeoutSeconds: 5              # 5s timeout per check
+          successThreshold: 1            # 1 success needed
+          failureThreshold: 12           # Allow 12 failures = 120s total
         readinessProbe:
           httpGet:
             path: /metrics
             port: 29999
           # Also make readiness probe more forgiving
-          initialDelaySeconds: 10        # Wait 10s before first check
-          periodSeconds: 5               # Check every 5s
-          timeoutSeconds: 3              # 3s timeout per check
+          initialDelaySeconds: 30        # Wait 30s before first check
+          periodSeconds: 10              # Check every 10s
+          timeoutSeconds: 5              # 5s timeout per check
           successThreshold: 1            # 1 success needed
-          failureThreshold: 3            # Allow 3 failures = 15s
+          failureThreshold: 6            # Allow 6 failures = 60s
         livenessProbe:
           httpGet:
             path: /metrics
             port: 29999
           # Liveness probe - less aggressive
-          initialDelaySeconds: 60        # Wait 60s before first check
+          initialDelaySeconds: 120       # Wait 2 minutes before first check
           periodSeconds: 30              # Check every 30s
           timeoutSeconds: 5              # 5s timeout per check
           successThreshold: 1            # 1 success needed
           failureThreshold: 3            # Allow 3 failures = 90s
+      # Add volumes for device access
+      volumes:
+      - name: dev-dri
+        hostPath:
+          path: /dev/dri
+          type: Directory
+      - name: sys-class-drm
+        hostPath:
+          path: /sys/class/drm
+          type: Directory
+      - name: sys-devices
+        hostPath:
+          path: /sys/devices
+          type: Directory
+      - name: usr-lib
+        hostPath:
+          path: /usr/lib/x86_64-linux-gnu
+          type: Directory
