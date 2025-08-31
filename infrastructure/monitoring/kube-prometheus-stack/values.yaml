@@ -54,7 +54,7 @@ grafana:
         gnetId: 22759
         datasource: VictoriaLogs
       intel-xpu-manager:
-        url: https://raw.githubusercontent.com/intel/xpumanager/V1.3.2/deployment/kubernetes/monitoring/grafana-dashboard.json
+        url: https://raw.githubusercontent.com/intel/xpumanager/refs/heads/master/deployment/kubernetes/monitoring/grafana-dashboard.json
         datasource: Prometheus
 prometheus:
   prometheusSpec:
