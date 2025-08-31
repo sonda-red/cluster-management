@@ -17,4 +17,4 @@ spec:
       interval: 10s
       scrapeTimeout: 5s
       honorLabels: true
-  fallbackScrapeProtocol: PrometheusText0_0_4
+  fallbackScrapeProtocol: PrometheusText0.0.4
