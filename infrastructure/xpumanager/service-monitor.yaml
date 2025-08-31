@@ -17,3 +17,7 @@ spec:
       interval: 10s
       scrapeTimeout: 5s
       honorLabels: true
+      scrapeProtocols:
+        - OpenMetricsText1_0_0
+        - PrometheusText0_0_4
+  fallbackScrapeProtocol: PrometheusText0_0_4
