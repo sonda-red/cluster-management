@@ -56,6 +56,9 @@ grafana:
       intel-xpu-manager:
         url: https://raw.githubusercontent.com/intel/xpumanager/refs/heads/master/deployment/kubernetes/monitoring/grafana-dashboard.json
         datasource: Prometheus
+      intel-arc-xpu-metrics:
+        url: https://raw.githubusercontent.com/sonda-red/cluster-management/refs/heads/main/infrastructure/monitoring/dashboards/intel-arc-xpu-metrics-dashboard.json
+        datasource: Prometheus
 prometheus:
   fallback_scrape_protocol: "PrometheusText0.0.4"
   prometheusSpec:
