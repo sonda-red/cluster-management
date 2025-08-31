@@ -3,6 +3,6 @@ kind: Kustomization
 resources:
   - xpumanager.yaml
   - service.yaml
-  - service-monitor.yaml
+#  - service-monitor.yaml
 # Ensure all resources are deployed to the intel namespace
 namespace: intel
