@@ -57,13 +57,13 @@ grafana:
         url: https://raw.githubusercontent.com/intel/xpumanager/refs/heads/master/deployment/kubernetes/monitoring/grafana-dashboard.json
         datasource: Prometheus
 prometheus:
+  fallback_scrape_protocol: "PrometheusText0.0.4"
   prometheusSpec:
     additionalScrapeConfigs:
       - job_name: intel-xpumanager
         metrics_path: /metrics
         scrape_interval: 15s
         scrape_protocols: [OpenMetricsText1.0.0, PrometheusText0.0.4]
-        fallback_scrape_protocol: PrometheusText0.0.4
         static_configs:
           - targets: ['intel-xpumanager.intel.svc:29999']
     retention: 1d
