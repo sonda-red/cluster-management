@@ -13,8 +13,10 @@ spec:
       app: intel-xpumanager
   endpoints:
     - port: metrics
+      scheme: http
       path: /metrics
       interval: 10s
       scrapeTimeout: 5s
       honorLabels: true
   fallbackScrapeProtocol: PrometheusText0.0.4
+  scrapeProtocols: ["OpenMetricsText1.0.0","OpenMetricsText0.0.1","PrometheusText1.0.0","PrometheusText0.0.4"]
