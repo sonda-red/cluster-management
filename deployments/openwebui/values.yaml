@@ -155,6 +155,7 @@ openaiBaseApiUrl: "https://api.openai.com/v1"
 # -- OpenAI base API URLs to use. Overwrites the value in openaiBaseApiUrl if set
 openaiBaseApiUrls:
   - "http://kit-test.vllm:8000"
+  - "http://vllm-14b-tp2.vllm:8014"
   # - "https://api.company.openai.com/v1"
 
 
