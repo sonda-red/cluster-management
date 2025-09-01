@@ -60,7 +60,6 @@ spec:
               --max-num-batched-tokens 4096 \
               --max-num-seqs 24 \
               --block-size 8 \
-              --api-key asdf \
               --distributed-executor-backend ray
         env:
           - { name: ZE_AFFINITY_MASK, value: "0,1" }
