@@ -59,9 +59,23 @@ grafana:
       intel-arc-xpu-metrics:
         url: https://raw.githubusercontent.com/sonda-red/cluster-management/refs/heads/main/infrastructure/monitoring/dashboards/intel-arc-xpu-metrics-dashboard.json
         datasource: Prometheus
-      # vllm:
-      #   url: https://raw.githubusercontent.com/vllm-project/vllm/refs/heads/main/examples/online_serving/prometheus_grafana/grafana.json
-      #   datasource: Prometheus
+      vllm:
+        url: https://raw.githubusercontent.com/vllm-project/vllm/refs/heads/main/examples/online_serving/prometheus_grafana/grafana.json
+        datasource: Prometheus
+  livenessProbe:
+    httpGet: { path: /api/health, port: 3000 }
+    initialDelaySeconds: 120
+    periodSeconds: 10
+    failureThreshold: 6
+  readinessProbe:
+    httpGet: { path: /api/health, port: 3000 }
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    failureThreshold: 12
+  startupProbe:
+    httpGet: { path: /api/health, port: 3000 }
+    periodSeconds: 10
+    failureThreshold: 30
 prometheus:
   fallback_scrape_protocol: "PrometheusText0.0.4"
   prometheusSpec:
