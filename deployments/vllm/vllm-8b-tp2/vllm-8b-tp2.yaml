@@ -45,21 +45,18 @@ spec:
           - |
             source /opt/intel/1ccl-wks/setvars.sh && \
             python -m ipex_llm.vllm.xpu.entrypoints.openai.api_server \
-              --served-model-name ds-r1-qwen-8b \
+              --served-model-name ds-r1-llama-8b \
               --port 8015 \
               --model /data/ds-r1-llama-8 \
-              --trust-remote-code \
               --device xpu \
               --dtype float16 \
               --tensor-parallel-size 2 \
               --gpu-memory-utilization 0.8 \
               --enforce-eager \
-              --load-in-low-bit asym_int4 \
               --max-model-len 4096 \
               --max-num-batched-tokens 4096 \
               --max-num-seqs 24 \
-              --block-size 8 \
-              --distributed-executor-backend ray
+              --block-size 8
         env:
           - { name: ZE_AFFINITY_MASK, value: "0,1" }
           - { name: ONEAPI_DEVICE_SELECTOR, value: "level_zero:gpu" }
