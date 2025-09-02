@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: vllm-8b-tp2
+  namespace: monitoring           # or wherever your ServiceMonitors live
+  labels:
+    release: kube-prom            # ← must match Prometheus' serviceMonitorSelector
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vllm-8b-tp2   # ← label on your Service
+  namespaceSelector:
+    matchNames: ["vllm"]
+  endpoints:
+    - port: http                  # ← name of the Service port (or use targetPort: 8014)
+      path: /metrics
+      scheme: http
+      interval: 15s
+      scrapeTimeout: 10s
+      honorLabels: true
