@@ -5,4 +5,4 @@ resources:
   # - kit-test/
   - pvc.yaml
   # - vllm-14b-tp2/
-  - vllm-8b-tp2/
+  # - vllm-8b-tp2/
