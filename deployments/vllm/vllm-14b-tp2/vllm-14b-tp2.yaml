@@ -59,8 +59,6 @@ spec:
               --max-model-len 4096 \
               --max-num-batched-tokens 4096 \
               --max-num-seqs 24 \
-              --block-size 8 \
-              --distributed-executor-backend ray
         env:
           - { name: ZE_AFFINITY_MASK, value: "0,1" }
           - { name: ONEAPI_DEVICE_SELECTOR, value: "level_zero:gpu" }
