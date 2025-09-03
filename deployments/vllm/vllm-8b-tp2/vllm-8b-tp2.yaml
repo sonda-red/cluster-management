@@ -51,7 +51,6 @@ spec:
               --device xpu \
               --dtype float16 \
               --distributed-executor-backend mp \
-              --load-in-low-bit asym_int4 \
               --tensor-parallel-size 2 \
               --gpu-memory-utilization 0.70 \
               --enforce-eager \
