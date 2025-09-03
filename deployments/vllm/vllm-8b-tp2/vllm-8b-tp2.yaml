@@ -50,13 +50,15 @@ spec:
               --model /data/ds-r1-llama-8 \
               --device xpu \
               --dtype float16 \
-              --tensor-parallel-size 1 \
-              --gpu-memory-utilization 0.8 \
+              --tensor-parallel-size 2 \
+              --mp-start-method spawn \
+              --gpu-memory-utilization 0.70 \
               --enforce-eager \
-              --max-model-len 4096 \
-              --max-num-batched-tokens 4096 \
-              --max-num-seqs 24 \
+              --max-model-len 2048 \
+              --max-num-batched-tokens 2048 \
+              --max-num-seqs 6 \
               --block-size 8
+
         env:
           - { name: ZE_AFFINITY_MASK, value: "0,1" }
           - { name: ONEAPI_DEVICE_SELECTOR, value: "level_zero:gpu" }
