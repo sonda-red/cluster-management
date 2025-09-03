@@ -57,7 +57,6 @@ spec:
               --max-model-len 2048 \
               --max-num-batched-tokens 2048 \
               --max-num-seqs 6 \
-              --kv-cache-dtype auto \
               --block-size 8
 
         env:
