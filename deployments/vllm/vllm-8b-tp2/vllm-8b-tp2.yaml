@@ -29,7 +29,7 @@ spec:
         image: ghcr.io/kitops-ml/kitops-init:v1.7.0
         env:
         - name: MODELKIT_REF
-          value: "http://harbor.harbor.svc.cluster.local/sonda-red/ds-r1-llama-8:0.0.1"
+          value: "harbor.harbor.svc.cluster.local/sonda-red/ds-r1-llama-8:0.0.1"
         - name: UNPACK_PATH
           value: /data/ds-r1-llama-8
         - name: UNPACK_FILTER
