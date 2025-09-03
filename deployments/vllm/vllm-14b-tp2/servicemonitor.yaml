@@ -4,7 +4,7 @@ metadata:
   name: vllm-14b-tp2
   namespace: monitoring           # or wherever your ServiceMonitors live
   labels:
-    release: kube-prom            # ← must match Prometheus' serviceMonitorSelector
+    release: kube-prometheus-stack            # ← must match Prometheus' serviceMonitorSelector
 spec:
   selector:
     matchLabels:

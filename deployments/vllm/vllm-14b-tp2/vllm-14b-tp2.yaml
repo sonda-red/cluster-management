@@ -30,14 +30,14 @@ spec:
         env:
         - name: MODELKIT_REF
           # swap to your 14B artifact tag
-          value: "harbor.sonda.red.local/sonda-red/ds-r1-qwen-14b:0.0.1"
+          value: "harbor.harbor/sonda-red/ds-r1-qwen-14b:0.0.1"
         - name: UNPACK_PATH
-          value: /data
+          value: /data/ds-r1-qwen-14b
         - name: UNPACK_FILTER
           value: model
         - name: EXTRA_FLAGS
           value: "--tls-verify=false -i --concurrency 1 --progress=fancy --plain-http -vv"
-        volumeMounts: [{ name: modelkit, mountPath: /data }]
+        volumeMounts: [{ name: modelkit, mountPath: /data/ds-r1-qwen-14b }]
       containers:
       - name: vllm
         image: intelanalytics/ipex-llm-serving-xpu:latest
@@ -48,7 +48,7 @@ spec:
             python -m ipex_llm.vllm.xpu.entrypoints.openai.api_server \
               --served-model-name ds-r1-qwen-14b \
               --port 8014 \
-              --model /data \
+              --model /data/ds-r1-qwen-14b \
               --trust-remote-code \
               --device xpu \
               --dtype float16 \
@@ -75,7 +75,7 @@ spec:
           - { name: CCL_BLOCKING_WAIT, value: "0" }
         ports: [{ containerPort: 8014 }]
         volumeMounts:
-          - { name: modelkit, mountPath: /data }
+          - { name: modelkit, mountPath: /data/ds-r1-qwen-14b }
           - { name: dshm,   mountPath: /dev/shm }
         resources:
           requests: { cpu: "8", memory: "28Gi", gpu.intel.com/i915: 2 }
