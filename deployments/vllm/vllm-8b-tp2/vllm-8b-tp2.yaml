@@ -77,7 +77,7 @@ spec:
         ports: [{ containerPort: 8015 }]
         volumeMounts:
           - { name: modelkit, mountPath: /data/ds-r1-llama-8 }
-          - { name: dshm,   mountPath: /dev/shm }
+          # - { name: dshm,   mountPath: /dev/shm }
         resources:
           requests: { cpu: "8", memory: "28Gi", gpu.intel.com/i915: 2 }
           limits:   { cpu: "16", memory: "36Gi", gpu.intel.com/i915: 2 }
