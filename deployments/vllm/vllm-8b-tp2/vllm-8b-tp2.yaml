@@ -35,7 +35,7 @@ spec:
         - name: UNPACK_FILTER
           value: model
         - name: EXTRA_FLAGS
-          value: "--tls-verify=false --plain-http -i --concurrency 1 --progress fancy -vv"
+          value: "--tls-verify=false --plain-http -i --concurrency 1 --progress=fancy -vv"
         volumeMounts: [{ name: modelkit, mountPath: /data/ds-r1-llama-8 }]
       containers:
       - name: vllm
@@ -51,7 +51,6 @@ spec:
               --device xpu \
               --dtype float16 \
               --distributed-executor-backend mp \
-              --disable-async-output-proc \
               --load-in-low-bit asym_int4 \
               --tensor-parallel-size 2 \
               --gpu-memory-utilization 0.70 \
