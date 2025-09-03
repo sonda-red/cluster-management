@@ -51,7 +51,6 @@ spec:
               --device xpu \
               --dtype float16 \
               --tensor-parallel-size 2 \
-              --mp-start-method spawn \
               --gpu-memory-utilization 0.70 \
               --enforce-eager \
               --max-model-len 2048 \
