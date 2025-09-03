@@ -36,7 +36,7 @@ spec:
         - name: UNPACK_FILTER
           value: model
         - name: EXTRA_FLAGS
-          value: "--tls-verify=false -i --concurrency 1 --progress fancy"
+          value: "--tls-verify=false -i --concurrency 1 --progress=fancy --plain-http -vv"
         volumeMounts: [{ name: modelkit, mountPath: /data }]
       containers:
       - name: vllm
