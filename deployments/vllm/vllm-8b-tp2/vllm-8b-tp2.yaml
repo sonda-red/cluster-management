@@ -50,6 +50,9 @@ spec:
               --model /data/ds-r1-llama-8 \
               --device xpu \
               --dtype float16 \
+              --distributed-executor-backend ray \
+              --disable-async-output-proc \
+              --load-in-low-bit asym_int4 \
               --tensor-parallel-size 2 \
               --gpu-memory-utilization 0.70 \
               --enforce-eager \
