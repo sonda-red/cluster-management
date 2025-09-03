@@ -29,13 +29,13 @@ spec:
         image: ghcr.io/kitops-ml/kitops-init:v1.7.0
         env:
         - name: MODELKIT_REF
-          value: "harbor.sonda.red.local/sonda-red/ds-r1-llama-8:0.0.1"
+          value: "harbor/sonda-red/ds-r1-llama-8:0.0.1"
         - name: UNPACK_PATH
           value: /data/ds-r1-llama-8
         - name: UNPACK_FILTER
           value: model
         - name: EXTRA_FLAGS
-          value: "--tls-verify=false -o --concurrency 1 --progress fancy"
+          value: "--tls-verify=false --plain-http -o --concurrency 1 --progress fancy"
         volumeMounts: [{ name: modelkit, mountPath: /data/ds-r1-llama-8 }]
       containers:
       - name: vllm
