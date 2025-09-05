@@ -78,8 +78,8 @@ spec:
           - { name: modelkit, mountPath: /data/ds-r1-qwen-14b }
           - { name: dshm,   mountPath: /dev/shm }
         resources:
-          requests: { cpu: "8", memory: "28Gi", gpu.intel.com/i915: 2 }
-          limits:   { cpu: "16", memory: "36Gi", gpu.intel.com/i915: 2 }
+          requests: { cpu: "8", memory: "28Gi", gpu.intel.com/i915: 12 }
+          limits:   { cpu: "16", memory: "36Gi", gpu.intel.com/i915: 20 }
         startupProbe:
           tcpSocket: { port: 8014 }
           periodSeconds: 10
@@ -94,6 +94,8 @@ kind: Service
 metadata:
   name: vllm-14b-tp2
   namespace: vllm
+  labels:
+    app.kubernetes.io/name: vllm-14b-tp2   # ← label on your Service
 spec:
   selector: { app.kubernetes.io/name: vllm-14b-tp2 }
   ports: [{ name: http, port: 8014, targetPort: 8014 }]
