@@ -47,7 +47,7 @@ spec:
             # Number of containers that can share the same GPU device (default: 1)
             # Higher values allow more workloads to share GPU resources
             - "-shared-dev-num"
-            - "10"
+            - "1"
             # Enable '*_monitoring' resource that provides access to all Intel GPU devices on the node
             # Useful for metrics collection with tools like XPU Manager or Prometheus
             - "-enable-monitoring"
@@ -57,8 +57,8 @@ spec:
             # - "85"
             # GPU allocation policy for shared-dev-num > 1 (default: none)
             # Options: balanced (spreads workloads), packed (fills one GPU first), none (first available)
-            - "-allocation-policy"
-            - "balanced"
+            # - "-allocation-policy"
+            # - "balanced"
         - op: add
           path: /spec/template/spec/nodeSelector
           value:
