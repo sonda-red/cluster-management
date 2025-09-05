@@ -52,7 +52,7 @@ spec:
               --dtype float16 \
               --distributed-executor-backend ray \
               --tensor-parallel-size 1 \
-              --gpu-memory-utilization 0.70 \
+              --gpu-memory-utilization 0.9 \
               --enforce-eager \
               --max-model-len 2048 \
               --max-num-batched-tokens 2048 \
@@ -79,8 +79,8 @@ spec:
           - { name: modelkit, mountPath: /data/ds-r1-llama-8 }
           # - { name: dshm,   mountPath: /dev/shm }
         resources:
-          requests: { cpu: "8", memory: "28Gi", gpu.intel.com/i915: 2 }
-          limits:   { cpu: "16", memory: "36Gi", gpu.intel.com/i915: 2 }
+          requests: { cpu: "8", memory: "28Gi", gpu.intel.com/i915: 1 }
+          limits:   { cpu: "16", memory: "36Gi", gpu.intel.com/i915: 1 }
         startupProbe:
           tcpSocket: { port: 8015 }
           periodSeconds: 10
