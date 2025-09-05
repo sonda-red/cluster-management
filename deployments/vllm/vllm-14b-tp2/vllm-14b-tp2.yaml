@@ -38,6 +38,16 @@ spec:
         - name: EXTRA_FLAGS
           value: "--tls-verify=false -i --concurrency 1 --progress=fancy --plain-http -vv"
         volumeMounts: [{ name: modelkit, mountPath: /data/ds-r1-qwen-14b }]
+      - name: check-two-gpus
+        image: alpine:3.20
+        command: ["/bin/sh","-lc"]
+        args:
+        - |
+          set -euo pipefail
+          ds=(/dev/dri/renderD*)
+          [ ${#ds[@]} -ge 2 ] || { echo "Need 2 render nodes"; exit 1; }
+          uniq=$(for d in "${ds[@]}"; do readlink -f "/sys/class/drm/$(basename $d)/device"; done | sort -u | wc -l)
+          [ "$uniq" -ge 2 ] || { echo "Both shares map to same GPU"; exit 1; }
       containers:
       - name: vllm
         image: intelanalytics/ipex-llm-serving-xpu:latest
@@ -51,7 +61,8 @@ spec:
               --model /data/ds-r1-qwen-14b \
               --trust-remote-code \
               --device xpu \
-              --dtype float16 \
+              --dtype float16 \ 
+              --distributed-executor-backend mp \
               --tensor-parallel-size 2 \
               --gpu-memory-utilization 0.90 \
               --enforce-eager \
@@ -73,6 +84,10 @@ spec:
           - { name: TORCH_LLM_ALLREDUCE, value: "0" }
           - { name: CCL_SAME_STREAM, value: "1" }
           - { name: CCL_BLOCKING_WAIT, value: "0" }
+          - { name: VLLM_WORKER_MULTIPROCESSING_METHOD, value: "spawn" }
+          - { name: FI_PROVIDER, value: "tcp" }
+          - { name: CCL_ATL_SHM, value: "0" }
+          - { name: CCL_DG2_ALLREDUCE, value: "0" }
         ports: [{ containerPort: 8014 }]
         volumeMounts:
           - { name: modelkit, mountPath: /data/ds-r1-qwen-14b }
