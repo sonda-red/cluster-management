@@ -79,7 +79,7 @@ spec:
           - { name: dshm,   mountPath: /dev/shm }
         resources:
           requests: { cpu: "8", memory: "28Gi", gpu.intel.com/i915: 12 }
-          limits:   { cpu: "16", memory: "36Gi", gpu.intel.com/i915: 20 }
+          limits:   { cpu: "16", memory: "36Gi", gpu.intel.com/i915: 12 }
         startupProbe:
           tcpSocket: { port: 8014 }
           periodSeconds: 10
