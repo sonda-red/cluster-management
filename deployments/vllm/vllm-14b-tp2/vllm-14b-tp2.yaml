@@ -75,7 +75,6 @@ spec:
           - { name: ONEAPI_DEVICE_SELECTOR, value: "level_zero:gpu" }
           #- { name: CCL_WORKER_COUNT, value: "2" }
           - { name: SYCL_CACHE_PERSISTENT, value: "1" }
-          - { name: FI_PROVIDER, value: "shm" }
           - { name: CCL_ATL_TRANSPORT, value: "ofi" }
           - { name: CCL_ZE_IPC_EXCHANGE, value: "sockets" }
           - { name: USE_XETLA, value: "OFF" }
