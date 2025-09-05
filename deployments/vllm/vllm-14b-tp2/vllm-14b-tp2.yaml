@@ -78,7 +78,6 @@ spec:
           - { name: FI_PROVIDER, value: "shm" }
           - { name: CCL_ATL_TRANSPORT, value: "ofi" }
           - { name: CCL_ZE_IPC_EXCHANGE, value: "sockets" }
-          - { name: CCL_ATL_SHM, value: "1" }
           - { name: USE_XETLA, value: "OFF" }
           - { name: SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS, value: "2" }
           - { name: TORCH_LLM_ALLREDUCE, value: "0" }
