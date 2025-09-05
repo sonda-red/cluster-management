@@ -4,5 +4,5 @@ resources:
   - namespace.yaml
   # - kit-test/
   - pvc.yaml
-  - vllm-14b-tp2/
+  - vllm-14b-tp1/
   - vllm-8b-tp1/
