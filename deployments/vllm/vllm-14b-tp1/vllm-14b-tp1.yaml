@@ -51,7 +51,7 @@ spec:
               --trust-remote-code \
               --device xpu \
               --dtype float16 \
-              --tensor-parallel-size 2 \
+              --tensor-parallel-size 1 \
               --gpu-memory-utilization 0.90 \
               --enforce-eager \
               --load-in-low-bit asym_int4 \
