@@ -95,6 +95,8 @@ kind: Service
 metadata:
   name: vllm-8b-tp1
   namespace: vllm
+  labels:
+    app.kubernetes.io/name: vllm-8b-tp1 
 spec:
   selector: { app.kubernetes.io/name: vllm-8b-tp1 }
   ports: [{ name: http, port: 8015, targetPort: 8015 }]
