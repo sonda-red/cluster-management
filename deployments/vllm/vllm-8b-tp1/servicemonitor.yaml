@@ -1,14 +1,14 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: vllm-8b-tp2
+  name: vllm-8b-tp1
   namespace: monitoring           # or wherever your ServiceMonitors live
   labels:
     release: kube-prometheus-stack            # ← must match Prometheus' serviceMonitorSelector
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: vllm-8b-tp2   # ← label on your Service
+      app.kubernetes.io/name: vllm-8b-tp1   # ← label on your Service
   namespaceSelector:
     matchNames: ["vllm"]
   endpoints:

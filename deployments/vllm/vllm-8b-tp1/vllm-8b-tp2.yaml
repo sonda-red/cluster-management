@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vllm-8b-tp2
+  name: vllm-8b-tp1
   namespace: vllm
 spec:
   replicas: 1
   selector:
-    matchLabels: { app.kubernetes.io/name: vllm-8b-tp2 }
+    matchLabels: { app.kubernetes.io/name: vllm-8b-tp1 }
   template:
     metadata:
-      labels: { app.kubernetes.io/name: vllm-8b-tp2 }
+      labels: { app.kubernetes.io/name: vllm-8b-tp1 }
     spec:
       nodeSelector:
         kubernetes.io/hostname: sonda-core
@@ -51,7 +51,7 @@ spec:
               --device xpu \
               --dtype float16 \
               --distributed-executor-backend ray \
-              --tensor-parallel-size 2 \
+              --tensor-parallel-size 1 \
               --gpu-memory-utilization 0.70 \
               --enforce-eager \
               --max-model-len 2048 \
@@ -60,9 +60,9 @@ spec:
               --block-size 8
 
         env:
-          - { name: ZE_AFFINITY_MASK, value: "0,1" }
+         # - { name: ZE_AFFINITY_MASK, value: "0,1" }
           - { name: ONEAPI_DEVICE_SELECTOR, value: "level_zero:gpu" }
-          - { name: CCL_WORKER_COUNT, value: "2" }
+         # - { name: CCL_WORKER_COUNT, value: "2" }
           - { name: SYCL_CACHE_PERSISTENT, value: "1" }
           - { name: FI_PROVIDER, value: "tcp" }
           - { name: CCL_ATL_TRANSPORT, value: "ofi" }
@@ -93,9 +93,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: vllm-8b-tp2
+  name: vllm-8b-tp1
   namespace: vllm
 spec:
-  selector: { app.kubernetes.io/name: vllm-8b-tp2 }
+  selector: { app.kubernetes.io/name: vllm-8b-tp1 }
   ports: [{ name: http, port: 8015, targetPort: 8015 }]
   type: ClusterIP
