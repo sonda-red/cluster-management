@@ -150,12 +150,14 @@ service:
 enableOpenaiApi: true
 
 # -- OpenAI base API URL to use. Defaults to the Pipelines service endpoint when Pipelines are enabled, and "https://api.openai.com/v1" if Pipelines are not enabled and this value is blank
-openaiBaseApiUrl: "https://api.openai.com/v1"
+#openaiBaseApiUrl: "https://api.openai.com/v1"
 
 # -- OpenAI base API URLs to use. Overwrites the value in openaiBaseApiUrl if set
 openaiBaseApiUrls:
   - "http://kit-test.vllm:8000"
   - "http://vllm-14b-tp2.vllm:8014"
+  - "http://vllm-14b-tp1.vllm:8013"
+  - "http://vllm-8b-tp1.vllm:8015"
   # - "https://api.company.openai.com/v1"
 
 
