@@ -38,16 +38,6 @@ spec:
         - name: EXTRA_FLAGS
           value: "--tls-verify=false -i --concurrency 1 --progress=fancy --plain-http -vv"
         volumeMounts: [{ name: modelkit, mountPath: /data/ds-r1-qwen-14b }]
-      - name: check-two-gpus
-        image: alpine:3.20
-        command: ["/bin/sh","-lc"]
-        args:
-        - |
-          set -euo pipefail
-          ds=(/dev/dri/renderD*)
-          [ ${#ds[@]} -ge 2 ] || { echo "Need 2 render nodes"; exit 1; }
-          uniq=$(for d in "${ds[@]}"; do readlink -f "/sys/class/drm/$(basename $d)/device"; done | sort -u | wc -l)
-          [ "$uniq" -ge 2 ] || { echo "Both shares map to same GPU"; exit 1; }
       containers:
       - name: vllm
         image: intelanalytics/ipex-llm-serving-xpu:latest
