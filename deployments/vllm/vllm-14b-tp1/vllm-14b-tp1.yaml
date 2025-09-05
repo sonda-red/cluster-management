@@ -97,5 +97,5 @@ metadata:
     app.kubernetes.io/name: vllm-14b-tp1   # ← label on your Service
 spec:
   selector: { app.kubernetes.io/name: vllm-14b-tp1 }
-  ports: [{ name: http, port: 8013, targetPort: 8014 }]
+  ports: [{ name: http, port: 8013, targetPort: 8013 }]
   type: ClusterIP
