@@ -78,8 +78,8 @@ spec:
           - { name: modelkit, mountPath: /data/ds-r1-qwen-14b }
           - { name: dshm,   mountPath: /dev/shm }
         resources:
-          requests: { cpu: "8", memory: "28Gi", gpu.intel.com/i915: 12 }
-          limits:   { cpu: "16", memory: "36Gi", gpu.intel.com/i915: 12 }
+          requests: { cpu: "8", memory: "28Gi", gpu.intel.com/i915: 1 }
+          limits:   { cpu: "16", memory: "36Gi", gpu.intel.com/i915: 1 }
         startupProbe:
           tcpSocket: { port: 8013 }
           periodSeconds: 10
