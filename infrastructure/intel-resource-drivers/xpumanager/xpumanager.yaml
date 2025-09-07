@@ -1,0 +1,14 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: xpumanager
+  namespace: intel
+spec:
+  interval: 1h
+  path: ./deployments/gpu/intel-xpumanager
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: intel-rd
+  wait: true
+  targetNamespace: intel
