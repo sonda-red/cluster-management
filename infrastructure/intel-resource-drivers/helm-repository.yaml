@@ -7,7 +7,7 @@ spec:
   interval: 10m
   url: https://github.com/intel/intel-resource-drivers-for-kubernetes
   ref:
-    tag: v0.8.0
+    tag: gpu-v0.8.0
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
