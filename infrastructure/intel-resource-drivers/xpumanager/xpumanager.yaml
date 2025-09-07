@@ -15,9 +15,9 @@ spec:
   patches:
   - patch: |
       - op: add
-      path: /spec/template/spec/nodeSelector
-      value:
-        kubernetes.io/hostname: sonda-core
+        path: /spec/template/spec/nodeSelector
+        value:
+          kubernetes.io/hostname: sonda-core
     target:
       kind: DaemonSet
       name: intel-xpumanager
