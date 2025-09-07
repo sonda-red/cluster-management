@@ -1,14 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: intel
+namespace: intel-rd
 resources:
-#   - namespace.yaml
-#   - helm-repository.yaml
-#   - helm-release.yaml
-#   - gpu-plugin.yaml
-#   - gpu-plugin-overlay.yaml
+  - namespace.yaml
+  - helm-repository.yaml
+  - helm-release.yaml
 configMapGenerator:
-  - name: ido-values
+  - name: intel-rd-values
     files:
       - values.yaml
 generatorOptions:
