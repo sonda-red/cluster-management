@@ -12,13 +12,16 @@ spec:
     name: intel-rd
   wait: true
   targetNamespace: monitoring
-  patches:
-  - patch: |
+  postBuild:
+    substitute: {}
+    substituteFrom: []
+    patchesJson6902:
+    - target:
+        kind: DaemonSet
+        name: intel-xpumanager
+      patch:
       - op: add
         path: /spec/template/spec/nodeSelector
         value:
           kubernetes.io/hostname: sonda-core
-    target:
-      kind: DaemonSet
-      name: intel-xpumanager
     
