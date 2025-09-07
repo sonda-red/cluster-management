@@ -11,7 +11,7 @@ spec:
     kind: GitRepository
     name: intel-rd
   wait: true
-  targetNamespace: intel
+  targetNamespace: monitoring
   patches:
   - patch: |
       - op: add
