@@ -15,13 +15,13 @@ spec:
   postBuild:
     substitute: {}
     substituteFrom: []
-    patchesJson6902:
+    patches:
     - target:
         kind: DaemonSet
         name: intel-xpumanager
-      patch:
-      - op: add
-        path: /spec/template/spec/nodeSelector
-        value:
-          kubernetes.io/hostname: sonda-core
+      patch: |
+        - op: add
+          path: /spec/template/spec/nodeSelector
+          value:
+            kubernetes.io/hostname: sonda-core
     
