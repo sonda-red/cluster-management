@@ -12,10 +12,7 @@ spec:
     name: intel-rd
   wait: true
   targetNamespace: monitoring
-  postBuild:
-    substitute: {}
-    substituteFrom: []
-    patches:
+  patches:
     - target:
         kind: DaemonSet
         name: intel-xpumanager
