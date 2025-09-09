@@ -16,7 +16,7 @@ metadata:
   namespace: intel
 spec:
   interval: 1h
-  path: ./deployments/kubernetes/daemonset/base
+  path: ./deployment/kubernetes/daemonset/base
   prune: true
   sourceRef:
     kind: GitRepository
