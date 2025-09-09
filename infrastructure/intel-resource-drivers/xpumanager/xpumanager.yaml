@@ -31,7 +31,7 @@ spec:
         - op: add
           path: /spec/template/spec/nodeSelector
           value:
-            kubernetes.io/hostname: sonda-core 
+            kubernetes.io/hostname: sonda-core
         - op: add
           path: /spec/template/spec/resourceClaims
           value:
