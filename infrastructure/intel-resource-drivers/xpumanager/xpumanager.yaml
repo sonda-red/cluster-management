@@ -45,6 +45,8 @@ spec:
               operator: Equal
               value: gpu
               effect: PreferNoSchedule
+        - op: remove
+          path: /spec/template/spec/containers/0/resources/limits
       # patch: |
       #   - op: add
       #     path: /spec/template/spec/nodeSelector
