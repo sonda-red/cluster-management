@@ -51,7 +51,7 @@ spec:
           path: /spec/template/spec/resourceClaims
           value:
             - name: intel-gpu-resource
-              resourceClaimTemplateName: intel-gpu-claim
+              resourceClaimTemplateName: intel-monitor-claim
         - op: add
           path: /spec/template/spec/containers/0/resources/claims
           value:
