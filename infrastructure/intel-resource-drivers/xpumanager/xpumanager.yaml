@@ -50,7 +50,7 @@ spec:
             - name: intel-gpu-resource
               resourceClaimTemplateName: intel-monitor-claim
         - op: add
-          path: /spec/template/spec/containers/0/resources/claims
+          path: /spec/template/spec/containers/1/resources/claims
           value:
             - name: intel-gpu-resource
       # patch: |
