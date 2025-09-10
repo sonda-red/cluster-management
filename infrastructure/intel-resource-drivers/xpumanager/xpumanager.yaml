@@ -35,9 +35,6 @@ spec:
         - op: replace
           path: /spec/template/spec/containers/0/image
           value: ghcr.io/soliddowant/xpumanager:1.2.41
-        - op: replace
-          path: /spec/template/spec/containers/1/image
-          value: ghcr.io/soliddowant/xpumanager:1.2.41
         - op: add
           path: /spec/template/spec/tolerations
           value:
