@@ -1,4 +1,4 @@
-apiVersion: resource.k8s.io/v1
+apiVersion: resource.k8s.io/v1beta1
 kind: ResourceClaimTemplate
 metadata:
   name: intel-gpu-claim
@@ -8,6 +8,6 @@ spec:
     devices:
       requests:
         - name: intel-gpu
-          exactly:
-            deviceClassName: gpu.intel.com
-            count: 1        
+          deviceClassName: gpu.intel.com
+          adminAccess: true
+          allocationMode: "All"        
