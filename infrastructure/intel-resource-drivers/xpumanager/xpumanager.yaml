@@ -55,7 +55,7 @@ spec:
         - op: add
           path: /spec/template/spec/containers/0/resources/claims
           value:
-            - name: intel-gpu
+            - name: intel-gpu-resource
       # patch: |
       #   - op: add
       #     path: /spec/template/spec/nodeSelector
