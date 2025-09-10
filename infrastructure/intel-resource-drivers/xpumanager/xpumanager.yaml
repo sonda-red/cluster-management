@@ -47,22 +47,20 @@ spec:
               effect: PreferNoSchedule
         - op: remove
           path: /spec/template/spec/containers/0/resources/limits
+        - op: add
+          path: /spec/template/spec/resourceClaims
+          value:
+            - name: intel-gpu-resource
+              resourceClaimTemplateName: intel-gpu-claim
+        - op: add
+          path: /spec/template/spec/containers/0/resources/claims
+          value:
+            - name: intel-gpu-resource
       # patch: |
       #   - op: add
       #     path: /spec/template/spec/nodeSelector
       #     value:
       #       kubernetes.io/hostname: sonda-core
-      #   - op: add
-      #     path: /spec/template/spec/resourceClaims
-      #     value:
-      #       - name: intel-gpu-resource
-      #         resourceClaimTemplateName: intel-gpu-claim
-      #   - op: remove
-      #     path: /spec/template/spec/containers/0/resources/limits
-      #   - op: add
-      #     path: /spec/template/spec/containers/0/resources/claims
-      #     value:
-      #       - name: intel-gpu-resource
       #   - op: replace
       #     path: /spec/template/spec/containers/0/image
       #     value: ghcr.io/soliddowant/xpumanager:1.2.41
