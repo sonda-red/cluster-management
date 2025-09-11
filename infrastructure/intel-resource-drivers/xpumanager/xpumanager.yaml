@@ -22,6 +22,7 @@ spec:
     kind: GitRepository
     name: intel-xpumanager
   wait: true
+  force: true
   targetNamespace: intel
   patches:
     - target:
