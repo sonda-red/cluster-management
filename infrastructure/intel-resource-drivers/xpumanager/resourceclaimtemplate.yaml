@@ -10,4 +10,4 @@ spec:
         - name: intel-monitor
           deviceClassName: gpu.intel.com
           adminAccess: true
-          allocationMode: "All"        
+          allocationMode: "All"

@@ -36,6 +36,9 @@ spec:
         - op: replace
           path: /spec/template/spec/containers/0/image
           value: ghcr.io/soliddowant/xpumanager:1.2.41
+        - op: replace
+          path: /spec/template/spec/containers/1/image
+          value: ghcr.io/soliddowant/xpumanager:1.2.41
         - op: add
           path: /spec/template/spec/tolerations
           value:
@@ -52,6 +55,10 @@ spec:
               resourceClaimTemplateName: intel-monitor-claim
         - op: add
           path: /spec/template/spec/containers/0/resources/claims
+          value:
+            - name: intel-gpu-resource
+        - op: add
+          path: /spec/template/spec/containers/1/resources/claims
           value:
             - name: intel-gpu-resource
       # patch: |
