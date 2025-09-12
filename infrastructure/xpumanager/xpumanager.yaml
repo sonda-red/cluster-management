@@ -38,6 +38,13 @@ spec:
               operator: Equal
               value: gpu
               effect: PreferNoSchedule
+        - op: add
+          path: /spec/template/spec/containers/0/env
+          value:
+            - name: ZES_ENABLE_SYSMAN
+              value: "1"
+            - name: SPDLOG_LEVEL
+              value: debug
       target:
         kind: DaemonSet
         name: intel-xpumanager
