@@ -16,7 +16,7 @@ spec:
   serviceAccountName: system-upgrade
   upgrade:
     image: rancher/k3s-upgrade
-  version: v1.33.4+k3s1
+  version: v1.34.1-rc1+k3s1
   tolerations:
     - key: node-role.kubernetes.io/master
       operator: Exists
@@ -46,7 +46,7 @@ spec:
   serviceAccountName: system-upgrade
   upgrade:
     image: rancher/k3s-upgrade
-  version: v1.33.4+k3s1
+  version: v1.34.1-rc1+k3s1
   tolerations:
     - key: dedicated
       operator: Equal
