@@ -4,7 +4,7 @@ metadata:
   name: intel-xpumanager
   namespace: intel
 spec:
-  interval: 1h
+  interval: 10m
   url: https://github.com/intel/xpumanager
   ref:
     tag: v1.3.2
@@ -15,14 +15,12 @@ metadata:
   name: xpumanager
   namespace: intel
 spec:
-  interval: 1h
+  interval: 10m
   path: ./deployment/kubernetes/daemonset/base
   prune: true
   sourceRef:
     kind: GitRepository
     name: intel-xpumanager
-  wait: true
-  force: true
   targetNamespace: intel
   patches:
     - target:
