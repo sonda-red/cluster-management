@@ -43,7 +43,7 @@ spec:
           value:
             # Enable GPU health management via oneAPI/Level-Zero interface
             # Requires GPU Level-Zero sidecar, reports device as unhealthy if memory/bus issues or temp over limit
-            - "-health-management"
+            # - "-health-management"
             # Number of containers that can share the same GPU device (default: 1)
             # Higher values allow more workloads to share GPU resources
             - "-shared-dev-num"
