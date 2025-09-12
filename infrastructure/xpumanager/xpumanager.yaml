@@ -46,27 +46,7 @@ spec:
             - name: SPDLOG_LEVEL
               value: debug
             - name: ZE_DEBUG
-              value: "1"
-            - name: LD_LIBRARY_PATH
-              value: "/host_lib64:/host_lib_gnu:${LD_LIBRARY_PATH}"
-        - op: add
-          path: /spec/template/spec/volumes
-          value:
-            - name: host-lib64
-              hostPath:
-                path: /usr/lib64
-            - name: host-lib-gnu
-              hostPath:
-                path: /usr/lib/x86_64-linux-gnu
-        - op: add
-          path: /spec/template/spec/containers/0/volumeMounts
-          value:
-            - name: host-lib64
-              mountPath: /host_lib64
-              readOnly: true
-            - name: host-lib-gnu
-              mountPath: /host_lib_gnu
-              readOnly: true 
+              value: "1" 
       target:
         kind: DaemonSet
         name: intel-xpumanager
