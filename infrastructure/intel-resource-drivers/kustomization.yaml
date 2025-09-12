@@ -5,7 +5,7 @@ resources:
   - namespace.yaml
   - helm-repository.yaml
   - helm-release.yaml
-  - xpumanager/
+#  - xpumanager/
 configMapGenerator:
   - name: intel-rd-values
     files:
