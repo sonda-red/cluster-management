@@ -4,6 +4,6 @@ resources:
   - service.yaml
   - service-monitor.yaml
   - xpumanager.yaml
-  - resourceclaimtemplate.yaml
+  #- resourceclaimtemplate.yaml
 # Ensure all resources are deployed to the intel namespace
 namespace: intel

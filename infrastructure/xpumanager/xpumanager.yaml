@@ -1,0 +1,65 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: intel-xpumanager
+  namespace: intel
+spec:
+  interval: 1h
+  url: https://github.com/intel/xpumanager
+  ref:
+    tag: v1.3.2
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: xpumanager
+  namespace: intel
+spec:
+  interval: 1h
+  path: ./deployment/kubernetes/daemonset/base
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: intel-xpumanager
+  wait: true
+  force: true
+  targetNamespace: intel
+  patches:
+    - target:
+        kind: DaemonSet
+        name: intel-xpumanager
+      patch: |
+        - op: add
+          path: /spec/template/spec/nodeSelector
+          value:
+            kubernetes.io/hostname: sonda-core
+        - op: replace
+          path: /spec/template/spec/containers/0/image
+          value: ghcr.io/soliddowant/xpumanager:1.2.41
+        - op: add
+          path: /spec/template/spec/tolerations
+          value:
+            - key: dedicated
+              operator: Equal
+              value: gpu
+              effect: PreferNoSchedule
+      # DRA configuration for GPU resource management via resource claims
+      # patch: |
+        # - op: remove
+        #   path: /spec/template/spec/containers/0/resources/limits
+        # - op: add
+        #   path: /spec/template/spec/resourceClaims
+        #   value:
+        #     - name: intel-gpu-resource
+        #       resourceClaimTemplateName: intel-monitor-claim
+        # - op: add
+        #   path: /spec/template/spec/containers/0/resources/claims
+        #   value:
+        #     - name: intel-gpu-resource
+        # - op: add
+        #   path: /spec/template/spec/containers/1/resources/claims
+        #   value:
+        #     - name: intel-gpu-resource
+        # - op: replace
+        #   path: /spec/template/spec/containers/1/image
+        #   value: ghcr.io/soliddowant/xpumanager:1.2.41
