@@ -69,7 +69,6 @@ spec:
           - { name: ZE_AFFINITY_MASK, value: "0,1" }
           - { name: ONEAPI_DEVICE_SELECTOR, value: "level_zero:gpu" }
           - { name: SYCL_CACHE_PERSISTENT, value: "1" }
-          - { name: FI_PROVIDER, value: "tcp" }
           - { name: CCL_ATL_TRANSPORT, value: "ofi" }
           - { name: CCL_ZE_IPC_EXCHANGE, value: "sockets" }
           - { name: CCL_ATL_SHM, value: "1" }
