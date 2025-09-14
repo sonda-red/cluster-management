@@ -8,12 +8,12 @@ spec:
     devices:
       requests:
       - name: gpu
-        selectors:
-          - cel:
-              expression: 'device.capacity["gpu.intel.com"].memory.compareTo(quantity("16Gi")) >= 0'
         exactly:
           allocationMode: ExactCount
           count: 2
+          selectors:
+            - cel:
+                expression: 'device.capacity["gpu.intel.com"].memory.compareTo(quantity("16Gi")) >= 0'
           deviceClassName: gpu.intel.com
 ---
 apiVersion: resource.k8s.io/v1
@@ -26,10 +26,10 @@ spec:
     devices:
       requests:
       - name: gpu
-        selectors:
-          - cel:
-              expression: 'device.capacity["gpu.intel.com"].memory.compareTo(quantity("16Gi")) >= 0'
         exactly:
           allocationMode: ExactCount
           count: 1
+          selectors:
+            - cel:
+                expression: 'device.capacity["gpu.intel.com"].memory.compareTo(quantity("16Gi")) >= 0'
           deviceClassName: gpu.intel.com
