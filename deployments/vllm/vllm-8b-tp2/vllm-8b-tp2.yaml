@@ -56,39 +56,28 @@ spec:
               --trust-remote-code \
               --device xpu \
               --dtype float16 \
-              --distributed-executor-backend mp \
+              --distributed-executor-backend ray \
               --tensor-parallel-size 2 \
-              --gpu-memory-utilization 0.80 \
+              --gpu-memory-utilization 0.9 \
               --enforce-eager \
               --load-in-low-bit asym_int4 \
-              --max-model-len 1024 \
-              --max-num-batched-tokens 1024 \
-              --max-num-seqs 12 \
-              --block-size 16 \
-              --swap-space 2 \
+              --max-model-len 2048 \
+              --max-num-batched-tokens 2048 \
+              --max-num-seqs 6 \
+              --block-size 8 \
         env:
+          - { name: ZE_AFFINITY_MASK, value: "0,1" }
           - { name: ONEAPI_DEVICE_SELECTOR, value: "level_zero:gpu" }
-          #- { name: CCL_WORKER_COUNT, value: "2" }
           - { name: SYCL_CACHE_PERSISTENT, value: "1" }
+          - { name: FI_PROVIDER, value: "tcp" }
           - { name: CCL_ATL_TRANSPORT, value: "ofi" }
           - { name: CCL_ZE_IPC_EXCHANGE, value: "sockets" }
+          - { name: CCL_ATL_SHM, value: "1" }
           - { name: USE_XETLA, value: "OFF" }
           - { name: SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS, value: "2" }
           - { name: TORCH_LLM_ALLREDUCE, value: "0" }
           - { name: CCL_SAME_STREAM, value: "1" }
           - { name: CCL_BLOCKING_WAIT, value: "0" }
-          - { name: VLLM_WORKER_MULTIPROCESSING_METHOD, value: "spawn" }
-          - { name: FI_PROVIDER, value: "tcp" }
-          - { name: CCL_ATL_SHM, value: "0" }
-          - { name: CCL_DG2_ALLREDUCE, value: "0" }
-          # Memory management for Intel XPU
-          - { name: ZE_ENABLE_PCI_ID_DEVICE_ORDER, value: "1" }
-          - { name: SYCL_ENABLE_DEFAULT_CONTEXTS, value: "1" }
-          - { name: IPEX_XPU_ONEDNN_LAYOUT, value: "0" }
-          # Prevent UR_RESULT_ERROR_OUT_OF_RESOURCES
-          - { name: SYCL_PI_LEVEL_ZERO_BATCH_SIZE, value: "512" }
-          - { name: ZE_FLAT_DEVICE_HIERARCHY, value: "COMBINED" }
-          - { name: SYCL_PI_LEVEL_ZERO_EXPOSE_CSLICE_IN_AFFINITY_PARTITIONING, value: "0" }
         ports: [{ containerPort: 8011 }]
         lifecycle:
           preStop:
