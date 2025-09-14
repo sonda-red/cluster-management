@@ -66,7 +66,6 @@ spec:
               --block-size 16 \
               --swap-space 4 \
         env:
-          - { name: ZE_AFFINITY_MASK, value: "0,1" }
           - { name: ONEAPI_DEVICE_SELECTOR, value: "level_zero:gpu" }
           #- { name: CCL_WORKER_COUNT, value: "2" }
           - { name: SYCL_CACHE_PERSISTENT, value: "1" }
