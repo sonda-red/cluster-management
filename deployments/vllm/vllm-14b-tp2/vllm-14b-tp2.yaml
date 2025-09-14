@@ -44,11 +44,10 @@ spec:
         volumeMounts: [{ name: modelkit, mountPath: /data/ds-r1-qwen-14b }]
       containers:
       - name: vllm
-        image: intelanalytics/ipex-llm-serving-xpu:latest
+        image: intelanalytics/ipex-llm-serving-xpu:0.8.3-b20
         command: ["/bin/bash","-lc"]
         args:
           - |
-            source /opt/intel/1ccl-wks/setvars.sh && \
             python -m ipex_llm.vllm.xpu.entrypoints.openai.api_server \
               --served-model-name ds-r1-qwen-14b \
               --port 8014 \
@@ -56,7 +55,7 @@ spec:
               --trust-remote-code \
               --device xpu \
               --dtype float16 \
-              --distributed-executor-backend mp \
+              --distributed-executor-backend ray \
               --tensor-parallel-size 2 \
               --gpu-memory-utilization 0.75 \
               --enforce-eager \
@@ -67,17 +66,19 @@ spec:
               --block-size 16 \
               --swap-space 4 \
         env:
+          - { name: ZE_AFFINITY_MASK, value: "0,1" }
           - { name: ONEAPI_DEVICE_SELECTOR, value: "level_zero:gpu" }
-          #- { name: CCL_WORKER_COUNT, value: "2" }
           - { name: SYCL_CACHE_PERSISTENT, value: "1" }
+          - { name: FI_PROVIDER, value: "tcp" }
           - { name: CCL_ATL_TRANSPORT, value: "ofi" }
           - { name: CCL_ZE_IPC_EXCHANGE, value: "sockets" }
+          - { name: CCL_ATL_SHM, value: "1" }
+          - { name: CCL_DG2_USM, value: "1" }
           - { name: USE_XETLA, value: "OFF" }
           - { name: SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS, value: "2" }
           - { name: TORCH_LLM_ALLREDUCE, value: "0" }
           - { name: CCL_SAME_STREAM, value: "1" }
           - { name: CCL_BLOCKING_WAIT, value: "0" }
-          - { name: VLLM_WORKER_MULTIPROCESSING_METHOD, value: "spawn" }
           - { name: FI_PROVIDER, value: "tcp" }
           - { name: CCL_ATL_SHM, value: "0" }
           - { name: CCL_DG2_ALLREDUCE, value: "0" }

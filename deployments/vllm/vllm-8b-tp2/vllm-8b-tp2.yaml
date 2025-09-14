@@ -44,11 +44,10 @@ spec:
         volumeMounts: [{ name: modelkit, mountPath: /data/ds-r1-llama-8 }]
       containers:
       - name: vllm
-        image: intelanalytics/ipex-llm-serving-xpu:latest
+        image: intelanalytics/ipex-llm-serving-xpu:0.8.3-b20
         command: ["/bin/bash","-lc"]
         args:
           - |
-            source /opt/intel/1ccl-wks/setvars.sh && \
             python -m ipex_llm.vllm.xpu.entrypoints.openai.api_server \
               --served-model-name ds-r1-llama-8 \
               --port 8011 \
@@ -73,6 +72,7 @@ spec:
           - { name: CCL_ATL_TRANSPORT, value: "ofi" }
           - { name: CCL_ZE_IPC_EXCHANGE, value: "sockets" }
           - { name: CCL_ATL_SHM, value: "1" }
+          - { name: CCL_DG2_USM, value: "1" }
           - { name: USE_XETLA, value: "OFF" }
           - { name: SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS, value: "2" }
           - { name: TORCH_LLM_ALLREDUCE, value: "0" }
