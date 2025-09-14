@@ -23,51 +23,48 @@ spec:
     name: intel-xpumanager
   targetNamespace: intel
   patches:
+      # DRA configuration for GPU resource management via resource claims
     - patch: |
+        - op: remove
+          path: /spec/template/spec/containers/0/resources/limits
         - op: add
-          path: /spec/template/spec/nodeSelector
+          path: /spec/template/spec/resourceClaims
           value:
-            kubernetes.io/hostname: sonda-core
-        - op: replace
-          path: /spec/template/spec/containers/0/image
-          value: ghcr.io/soliddowant/xpumanager:1.2.41
+            - name: intel-gpu-resource
+              resourceClaimTemplateName: intel-monitor-claim
         - op: add
-          path: /spec/template/spec/tolerations
+          path: /spec/template/spec/containers/0/resources/claims
           value:
-            - key: dedicated
-              operator: Equal
-              value: gpu
-              effect: PreferNoSchedule
+            - name: intel-gpu-resource
         - op: add
-          path: /spec/template/spec/containers/0/env
+          path: /spec/template/spec/containers/1/resources/claims
           value:
-            - name: ZES_ENABLE_SYSMAN
-              value: "1"
-            - name: SPDLOG_LEVEL
-              value: debug
-            - name: ZE_DEBUG
-              value: "1" 
+            - name: intel-gpu-resource
       target:
         kind: DaemonSet
         name: intel-xpumanager
-        
-      # DRA configuration for GPU resource management via resource claims
-      # patch: |
-        # - op: remove
-        #   path: /spec/template/spec/containers/0/resources/limits
-        # - op: add
-        #   path: /spec/template/spec/resourceClaims
-        #   value:
-        #     - name: intel-gpu-resource
-        #       resourceClaimTemplateName: intel-monitor-claim
-        # - op: add
-        #   path: /spec/template/spec/containers/0/resources/claims
-        #   value:
-        #     - name: intel-gpu-resource
-        # - op: add
-        #   path: /spec/template/spec/containers/1/resources/claims
-        #   value:
-        #     - name: intel-gpu-resource
-        # - op: replace
-        #   path: /spec/template/spec/containers/1/image
-        #   value: ghcr.io/soliddowant/xpumanager:1.2.41
+  # Intel device plugin configuration for GPU resource management via device plugin
+  #   - patch: |
+  #       - op: add
+  #         path: /spec/template/spec/nodeSelector
+  #         value:
+  #           kubernetes.io/hostname: sonda-core
+  #       - op: replace
+  #         path: /spec/template/spec/containers/0/image
+  #         value: ghcr.io/soliddowant/xpumanager:1.2.41
+  #       - op: add
+  #         path: /spec/template/spec/tolerations
+  #         value:
+  #           - key: dedicated
+  #             operator: Equal
+  #             value: gpu
+  #             effect: PreferNoSchedule
+  #       - op: add
+  #         path: /spec/template/spec/containers/0/env
+  #         value:
+  #           - name: ZES_ENABLE_SYSMAN
+  #             value: "1"
+  #           - name: SPDLOG_LEVEL
+  #             value: debug
+  #           - name: ZE_DEBUG
+  #             value: "1" 

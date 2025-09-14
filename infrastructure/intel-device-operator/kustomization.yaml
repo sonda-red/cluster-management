@@ -4,9 +4,9 @@ namespace: intel
 resources:
   # - namespace.yaml
   - helm-repository.yaml
-  - helm-release.yaml
+  # - helm-release.yaml
 #  - gpu-plugin.yaml
-  - gpu-plugin-overlay.yaml
+  # - gpu-plugin-overlay.yaml
 configMapGenerator:
   - name: ido-values
     files:
