@@ -56,16 +56,16 @@ spec:
               --trust-remote-code \
               --device xpu \
               --dtype float16 \
-              --distributed-executor-backend ray \
+              --distributed-executor-backend mp \
               --tensor-parallel-size 2 \
-              --gpu-memory-utilization 0.75 \
+              --gpu-memory-utilization 0.80 \
               --enforce-eager \
               --load-in-low-bit asym_int4 \
-              --max-model-len 2048 \
-              --max-num-batched-tokens 2048 \
-              --max-num-seqs 12 \
+              --max-model-len 4096 \
+              --max-num-batched-tokens 1024 \
+              --max-num-seqs 16 \
               --block-size 16 \
-              --swap-space 4 \
+              --swap-space 2 \
         env:
           - { name: ONEAPI_DEVICE_SELECTOR, value: "level_zero:gpu" }
           #- { name: CCL_WORKER_COUNT, value: "2" }
@@ -85,6 +85,10 @@ spec:
           - { name: ZE_ENABLE_PCI_ID_DEVICE_ORDER, value: "1" }
           - { name: SYCL_ENABLE_DEFAULT_CONTEXTS, value: "1" }
           - { name: IPEX_XPU_ONEDNN_LAYOUT, value: "0" }
+          # Prevent UR_RESULT_ERROR_OUT_OF_RESOURCES
+          - { name: SYCL_PI_LEVEL_ZERO_BATCH_SIZE, value: "512" }
+          - { name: ZE_FLAT_DEVICE_HIERARCHY, value: "COMBINED" }
+          - { name: SYCL_PI_LEVEL_ZERO_EXPOSE_CSLICE_IN_AFFINITY_PARTITIONING, value: "0" }
         ports: [{ containerPort: 8011 }]
         lifecycle:
           preStop:
