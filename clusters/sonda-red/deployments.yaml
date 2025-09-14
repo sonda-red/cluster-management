@@ -5,7 +5,7 @@ metadata:
   name: deployment-controllers
   namespace: flux-system
 spec:
-  interval: 1h
+  interval: 10m
   retryInterval: 1m
   timeout: 5m
   sourceRef:
