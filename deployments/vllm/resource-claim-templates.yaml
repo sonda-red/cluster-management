@@ -1,4 +1,4 @@
-apiVersion: resource.k8s.io/v1beta1
+apiVersion: resource.k8s.io/v1
 kind: ResourceClaimTemplate
 metadata:
   name: dual-gpu-claim
@@ -8,10 +8,12 @@ spec:
     devices:
       requests:
       - name: gpu
-        deviceClassName: gpu.intel.com
-      count: 2
+        exactly:
+          allocationMode: ExactCount
+          count: 2
+          deviceClassName: gpu.intel.com
 ---
-apiVersion: resource.k8s.io/v1beta1
+apiVersion: resource.k8s.io/v1
 kind: ResourceClaimTemplate
 metadata:
   name: single-gpu-claim
@@ -21,5 +23,7 @@ spec:
     devices:
       requests:
       - name: gpu
-        deviceClassName: gpu.intel.com
-      count: 1
+        exactly:
+          allocationMode: ExactCount
+          count: 1
+          deviceClassName: gpu.intel.com
