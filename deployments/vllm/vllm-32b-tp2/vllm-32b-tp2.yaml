@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm-32b-tp2
+  namespace: vllm
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app.kubernetes.io/name: vllm-32b-tp2 }
+  template:
+    metadata:
+      labels: { app.kubernetes.io/name: vllm-32b-tp2 }
+    spec:
+      terminationGracePeriodSeconds: 60
+      nodeSelector:
+        kubernetes.io/hostname: sonda-core
+      tolerations:
+        - key: "dedicated"
+          operator: "Equal"
+          value: "gpu"
+          effect: "PreferNoSchedule"
+      resourceClaims:
+        - name: intel-gpu-resource
+          resourceClaimTemplateName: dual-gpu-claim
+      volumes:
+      - name: modelkit
+        persistentVolumeClaim:
+          claimName: vllm-modelkits
+      - name: dshm
+        emptyDir: { medium: Memory, sizeLimit: 16Gi }
+      initContainers:
+      - name: kitops-init
+        image: ghcr.io/kitops-ml/kitops-init:v1.7.0
+        env:
+        - name: MODELKIT_REF
+          # swap to your 32b artifact tag
+          value: "harbor.harbor/sonda-red/ds-r1-qwen-32b:0.0.1"
+        - name: UNPACK_PATH
+          value: /data/ds-r1-qwen-32b
+        - name: UNPACK_FILTER
+          value: model
+        - name: EXTRA_FLAGS
+          value: "--tls-verify=false -i --concurrency 1 --progress=fancy --plain-http -vv"
+        volumeMounts: [{ name: modelkit, mountPath: /data/ds-r1-qwen-32b }]
+      containers:
+      - name: vllm
+        image: intelanalytics/ipex-llm-serving-xpu:0.8.3-b20
+        command: ["/bin/bash","-lc"]
+        args:
+          - |
+            python -m ipex_llm.vllm.xpu.entrypoints.openai.api_server \
+              --served-model-name ds-r1-qwen-32b \
+              --port 8016 \
+              --model /data/ds-r1-qwen-32b \
+              --trust-remote-code \
+              --device xpu \
+              --dtype float16 \
+              --distributed-executor-backend ray \
+              --tensor-parallel-size 2 \
+              --gpu-memory-utilization 0.75 \
+              --enforce-eager \
+              --load-in-low-bit asym_int4 \
+              --max-model-len 2048 \
+              --max-num-batched-tokens 2048 \
+              --max-num-seqs 12 \
+              --block-size 16 \
+              --swap-space 4 \
+        env:
+          - { name: ZE_AFFINITY_MASK, value: "0,1" }
+          - { name: ONEAPI_DEVICE_SELECTOR, value: "level_zero:gpu" }
+          - { name: SYCL_CACHE_PERSISTENT, value: "1" }
+          - { name: CCL_ATL_TRANSPORT, value: "ofi" }
+          - { name: CCL_ZE_IPC_EXCHANGE, value: "sockets" }
+          - { name: CCL_ATL_SHM, value: "1" }
+          - { name: CCL_DG2_USM, value: "1" }
+          - { name: USE_XETLA, value: "OFF" }
+          - { name: SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS, value: "2" }
+          - { name: TORCH_LLM_ALLREDUCE, value: "0" }
+          - { name: CCL_SAME_STREAM, value: "1" }
+          - { name: CCL_BLOCKING_WAIT, value: "0" }
+          - { name: FI_PROVIDER, value: "tcp" }
+          - { name: CCL_DG2_ALLREDUCE, value: "0" }
+          # Memory management for Intel XPU
+          - { name: ZE_ENABLE_PCI_ID_DEVICE_ORDER, value: "1" }
+          - { name: SYCL_ENABLE_DEFAULT_CONTEXTS, value: "1" }
+          - { name: IPEX_XPU_ONEDNN_LAYOUT, value: "0" }
+        ports: [{ containerPort: 8016 }]
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh","-c","curl -sfm 5 http://127.0.0.1:8016/v1/shutdown || true; sleep 5"]
+        volumeMounts:
+          - { name: modelkit, mountPath: /data/ds-r1-qwen-32b }
+          - { name: dshm,   mountPath: /dev/shm }
+        resources:
+          requests: { cpu: "8", memory: "28Gi" }
+          limits:   { cpu: "16", memory: "36Gi" }
+          claims:
+            - name: intel-gpu-resource
+        startupProbe:
+          tcpSocket: { port: 8016 }
+          periodSeconds: 10
+          failureThreshold: 120
+        readinessProbe:
+          httpGet: { path: /v1/models, port: 8016 }
+          periodSeconds: 5
+          failureThreshold: 12
+        livenessProbe:
+          httpGet: { path: /v1/models, port: 8016 }
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          failureThreshold: 6
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vllm-32b-tp2
+  namespace: vllm
+  labels:
+    app.kubernetes.io/name: vllm-32b-tp2   # ← label on your Service
+spec:
+  selector: { app.kubernetes.io/name: vllm-32b-tp2 }
+  ports: [{ name: http, port: 8016, targetPort: 8016 }]
+  type: ClusterIP
