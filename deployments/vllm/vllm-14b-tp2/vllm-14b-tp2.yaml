@@ -18,6 +18,9 @@ spec:
           operator: "Equal"
           value: "gpu"
           effect: "PreferNoSchedule"
+      resourceClaims:
+        - name: intel-gpu-resource
+          resourceClaimTemplateName: dual-gpu-claim
       volumes:
       - name: modelkit
         persistentVolumeClaim:
@@ -83,6 +86,8 @@ spec:
         resources:
           requests: { cpu: "8", memory: "28Gi" }
           limits:   { cpu: "16", memory: "36Gi" }
+          claims:
+            - name: intel-gpu-resource
         startupProbe:
           tcpSocket: { port: 8014 }
           periodSeconds: 10
