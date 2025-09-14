@@ -57,9 +57,9 @@ spec:
               --dtype float16 \
               --distributed-executor-backend ray \
               --tensor-parallel-size 2 \
-              --gpu-memory-utilization 0.75 \
+              --gpu-memory-utilization 0.85 \
               --enforce-eager \
-              --load-in-low-bit asym_int4 \
+              --load-in-low-bit sym_int8 \
               --max-model-len 2048 \
               --max-num-batched-tokens 2048 \
               --max-num-seqs 12 \
