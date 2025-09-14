@@ -26,7 +26,7 @@ spec:
         persistentVolumeClaim:
           claimName: vllm-modelkits
       - name: dshm
-        emptyDir: { medium: Memory, sizeLimit: 12Gi }
+        emptyDir: { medium: Memory, sizeLimit: 16Gi }
       initContainers:
       - name: kitops-init
         image: ghcr.io/kitops-ml/kitops-init:v1.7.0
@@ -57,14 +57,16 @@ spec:
               --dtype float16 \
               --distributed-executor-backend mp \
               --tensor-parallel-size 2 \
-              --gpu-memory-utilization 0.90 \
+              --gpu-memory-utilization 0.75 \
               --enforce-eager \
               --load-in-low-bit asym_int4 \
-              --max-model-len 4096 \
-              --max-num-batched-tokens 4096 \
-              --max-num-seqs 24 \
+              --max-model-len 2048 \
+              --max-num-batched-tokens 2048 \
+              --max-num-seqs 12 \
+              --block-size 16 \
+              --swap-space 4 \
         env:
-         # - { name: ZE_AFFINITY_MASK, value: "0,1" }
+          - { name: ZE_AFFINITY_MASK, value: "0,1" }
           - { name: ONEAPI_DEVICE_SELECTOR, value: "level_zero:gpu" }
           #- { name: CCL_WORKER_COUNT, value: "2" }
           - { name: SYCL_CACHE_PERSISTENT, value: "1" }
@@ -79,6 +81,10 @@ spec:
           - { name: FI_PROVIDER, value: "tcp" }
           - { name: CCL_ATL_SHM, value: "0" }
           - { name: CCL_DG2_ALLREDUCE, value: "0" }
+          # Memory management for Intel XPU
+          - { name: ZE_ENABLE_PCI_ID_DEVICE_ORDER, value: "1" }
+          - { name: SYCL_ENABLE_DEFAULT_CONTEXTS, value: "1" }
+          - { name: IPEX_XPU_ONEDNN_LAYOUT, value: "0" }
         ports: [{ containerPort: 8014 }]
         volumeMounts:
           - { name: modelkit, mountPath: /data/ds-r1-qwen-14b }
