@@ -61,9 +61,9 @@ spec:
               --gpu-memory-utilization 0.80 \
               --enforce-eager \
               --load-in-low-bit asym_int4 \
-              --max-model-len 4096 \
+              --max-model-len 1024 \
               --max-num-batched-tokens 1024 \
-              --max-num-seqs 16 \
+              --max-num-seqs 12 \
               --block-size 16 \
               --swap-space 2 \
         env:
