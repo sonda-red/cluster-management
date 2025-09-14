@@ -18,6 +18,9 @@ spec:
           operator: "Equal"
           value: "gpu"
           effect: "PreferNoSchedule"
+      resourceClaims:
+        - name: intel-gpu-resource
+          resourceClaimTemplateName: dual-gpu-claim
       volumes:
       - name: modelkit
         persistentVolumeClaim:
@@ -81,8 +84,10 @@ spec:
           - { name: modelkit, mountPath: /data/ds-r1-qwen-14b }
           - { name: dshm,   mountPath: /dev/shm }
         resources:
-          requests: { cpu: "8", memory: "28Gi", gpu.intel.com/i915: 2 }
-          limits:   { cpu: "16", memory: "36Gi", gpu.intel.com/i915: 2 }
+          requests: { cpu: "8", memory: "28Gi" }
+          limits:   { cpu: "16", memory: "36Gi" }
+          claims:
+            - name: intel-gpu-resource
         startupProbe:
           tcpSocket: { port: 8014 }
           periodSeconds: 10
