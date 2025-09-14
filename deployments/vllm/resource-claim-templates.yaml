@@ -13,7 +13,7 @@ spec:
           count: 2
           selectors:
             - cel:
-                expression: 'device.capacity["gpu.intel.com"].memory.compareTo(quantity("16Gi")) >= 0'
+                expression: 'device.attributes["gpu.intel.com"].device_id == "0x56a0"'
           deviceClassName: gpu.intel.com
 ---
 apiVersion: resource.k8s.io/v1
@@ -31,5 +31,5 @@ spec:
           count: 1
           selectors:
             - cel:
-                expression: 'device.capacity["gpu.intel.com"].memory.compareTo(quantity("16Gi")) >= 0'
+                expression: 'device.attributes["gpu.intel.com"].device_id == "0x56a0"'
           deviceClassName: gpu.intel.com
