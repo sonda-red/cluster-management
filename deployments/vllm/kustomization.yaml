@@ -8,5 +8,5 @@ resources:
   # - vllm-8b-tp1/
   # - vllm-8b-tp2/
   # - vllm-14b-tp1/
-  - vllm-14b-tp2/
+  # - vllm-14b-tp2/
   # - vllm-32b-tp2/
