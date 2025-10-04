@@ -243,101 +243,103 @@ containerMode:
 
 ## template is the PodSpec for each runner Pod
 ## For reference: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#PodSpec
-template:
-  ## template.spec will be modified if you change the container mode
-  ## with containerMode.type=dind, we will populate the template.spec with following pod spec
-  ## template:
-  ##   spec:
-  ##     initContainers:
-  ##     - name: init-dind-externals
-  ##       image: ghcr.io/actions/actions-runner:latest
-  ##       command: ["cp", "-r", "/home/runner/externals/.", "/home/runner/tmpDir/"]
-  ##       volumeMounts:
-  ##         - name: dind-externals
-  ##           mountPath: /home/runner/tmpDir
-  ##     - name: dind
-  ##       image: docker:dind
-  ##       args:
-  ##         - dockerd
-  ##         - --host=unix:///var/run/docker.sock
-  ##         - --group=$(DOCKER_GROUP_GID)
-  ##       env:
-  ##         - name: DOCKER_GROUP_GID
-  ##           value: "123"
-  ##       securityContext:
-  ##         privileged: true
-  ##       restartPolicy: Always
-  ##       startupProbe:
-  ##         exec:
-  ##           command:
-  ##             - docker
-  ##             - info
-  ##         initialDelaySeconds: 0
-  ##         failureThreshold: 24
-  ##         periodSeconds: 5
-  ##       volumeMounts:
-  ##         - name: work
-  ##           mountPath: /home/runner/_work
-  ##         - name: dind-sock
-  ##           mountPath: /var/run
-  ##         - name: dind-externals
-  ##           mountPath: /home/runner/externals
-  ##     containers:
-  ##     - name: runner
-  ##       image: ghcr.io/actions/actions-runner:latest
-  ##       command: ["/home/runner/run.sh"]
-  ##       env:
-  ##         - name: DOCKER_HOST
-  ##           value: unix:///var/run/docker.sock
-  ##         - name: RUNNER_WAIT_FOR_DOCKER_IN_SECONDS
-  ##           value: "120"
-  ##       volumeMounts:
-  ##         - name: work
-  ##           mountPath: /home/runner/_work
-  ##         - name: dind-sock
-  ##           mountPath: /var/run
-  ##     volumes:
-  ##     - name: work
-  ##       emptyDir: {}
-  ##     - name: dind-sock
-  ##       emptyDir: {}
-  ##     - name: dind-externals
-  ##       emptyDir: {}
-  ######################################################################################################
-  ## with containerMode.type=kubernetes, we will populate the template.spec with following pod spec
-  ## template:
-  ##   spec:
-  ##     containers:
-  ##     - name: runner
-  ##       image: ghcr.io/actions/actions-runner:latest
-  ##       command: ["/home/runner/run.sh"]
-  ##       env:
-  ##         - name: ACTIONS_RUNNER_CONTAINER_HOOKS
-  ##           value: /home/runner/k8s/index.js
-  ##         - name: ACTIONS_RUNNER_POD_NAME
-  ##           valueFrom:
-  ##             fieldRef:
-  ##               fieldPath: metadata.name
-  ##         - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
-  ##           value: "true"
-  ##       volumeMounts:
-  ##         - name: work
-  ##           mountPath: /home/runner/_work
-  ##     volumes:
-  ##       - name: work
-  ##         ephemeral:
-  ##           volumeClaimTemplate:
-  ##             spec:
-  ##               accessModes: [ "ReadWriteOnce" ]
-  ##               storageClassName: "local-path"
-  ##               resources:
-  ##                 requests:
-  ##                   storage: 1Gi
-  # spec:
-  #   containers:
-  #     - name: runner
-  #       image: ghcr.io/actions/actions-runner:latest
-  #       command: ["/home/runner/run.sh"]
+## IMPORTANT: When using containerMode.type=dind, the template section should be empty
+## as the DinD mode will automatically generate the proper pod spec
+# template:
+#   ## template.spec will be modified if you change the container mode
+#   ## with containerMode.type=dind, we will populate the template.spec with following pod spec
+#   ## template:
+#   ##   spec:
+#   ##     initContainers:
+#   ##     - name: init-dind-externals
+#   ##       image: ghcr.io/actions/actions-runner:latest
+#   ##       command: ["cp", "-r", "/home/runner/externals/.", "/home/runner/tmpDir/"]
+#   ##       volumeMounts:
+#   ##         - name: dind-externals
+#   ##           mountPath: /home/runner/tmpDir
+#   ##     - name: dind
+#   ##       image: docker:dind
+#   ##       args:
+#   ##         - dockerd
+#   ##         - --host=unix:///var/run/docker.sock
+#   ##         - --group=$(DOCKER_GROUP_GID)
+#   ##       env:
+#   ##         - name: DOCKER_GROUP_GID
+#   ##           value: "123"
+#   ##       securityContext:
+#   ##         privileged: true
+#   ##       restartPolicy: Always
+#   ##       startupProbe:
+#   ##         exec:
+#   ##           command:
+#   ##             - docker
+#   ##             - info
+#   ##         initialDelaySeconds: 0
+#   ##         failureThreshold: 24
+#   ##         periodSeconds: 5
+#   ##       volumeMounts:
+#   ##         - name: work
+#   ##           mountPath: /home/runner/_work
+#   ##         - name: dind-sock
+#   ##           mountPath: /var/run
+#   ##         - name: dind-externals
+#   ##           mountPath: /home/runner/externals
+#   ##     containers:
+#   ##     - name: runner
+#   ##       image: ghcr.io/actions/actions-runner:latest
+#   ##       command: ["/home/runner/run.sh"]
+#   ##       env:
+#   ##         - name: DOCKER_HOST
+#   ##           value: unix:///var/run/docker.sock
+#   ##         - name: RUNNER_WAIT_FOR_DOCKER_IN_SECONDS
+#   ##           value: "120"
+#   ##       volumeMounts:
+#   ##         - name: work
+#   ##           mountPath: /home/runner/_work
+#   ##         - name: dind-sock
+#   ##           mountPath: /var/run
+#   ##     volumes:
+#   ##     - name: work
+#   ##       emptyDir: {}
+#   ##     - name: dind-sock
+#   ##       emptyDir: {}
+#   ##     - name: dind-externals
+#   ##       emptyDir: {}
+#   ######################################################################################################
+#   ## with containerMode.type=kubernetes, we will populate the template.spec with following pod spec
+#   ## template:
+#   ##   spec:
+#   ##     containers:
+#   ##     - name: runner
+#   ##       image: ghcr.io/actions/actions-runner:latest
+#   ##       command: ["/home/runner/run.sh"]
+#   ##       env:
+#   ##         - name: ACTIONS_RUNNER_CONTAINER_HOOKS
+#   ##           value: /home/runner/k8s/index.js
+#   ##         - name: ACTIONS_RUNNER_POD_NAME
+#   ##           valueFrom:
+#   ##             fieldRef:
+#   ##               fieldPath: metadata.name
+#   ##         - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
+#   ##           value: "true"
+#   ##       volumeMounts:
+#   ##         - name: work
+#   ##           mountPath: /home/runner/_work
+#   ##     volumes:
+#   ##       - name: work
+#   ##         ephemeral:
+#   ##           volumeClaimTemplate:
+#   ##             spec:
+#   ##               accessModes: [ "ReadWriteOnce" ]
+#   ##               storageClassName: "local-path"
+#   ##               resources:
+#   ##                 requests:
+#   ##                   storage: 1Gi
+#   # spec:
+#   #   containers:
+#   #     - name: runner
+#   #       image: ghcr.io/actions/actions-runner:latest
+#   #       command: ["/home/runner/run.sh"]
 ## Optional controller service account that needs to have required Role and RoleBinding
 ## to operate this gha-runner-scale-set installation.
 ## The helm chart will try to find the controller deployment and its service account at installation time.
