@@ -2,8 +2,18 @@ releases:
 - name: cert-manager
   namespace: cert-manager
   chart: oci://quay.io/jetstack/charts/cert-manager
-  version: 1.18.2
+  version: 1.19.0
   installed: true
   createNamespace: true
   values:
     - values.yaml
+
+- name: trust-manager
+  namespace: cert-manager
+  chart: oci://quay.io/jetstack/charts/trust-manager
+  version: 0.20.1
+  installed: true
+  needs:
+    - cert-manager
+  # values:
+  #   - trust-manager-values.yaml
