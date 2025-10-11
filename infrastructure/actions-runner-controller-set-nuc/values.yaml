@@ -72,6 +72,39 @@ containerMode:
   #     requests:
   #       storage: 1Gi
 
+## Template customization for DIND runners to trust Harbor certificate
+## The CA certificate is distributed by trust-manager via the Bundle resource
+template:
+  spec:
+    volumes:
+      - name: harbor-ca-cert
+        configMap:
+          name: harbor-ca-bundle
+          items:
+            - key: ca.crt
+              path: ca.crt
+    containers:
+      - name: dind
+        volumeMounts:
+          - name: harbor-ca-cert
+            mountPath: /etc/docker/certs.d/harbor.harbor.svc.cluster.local
+            readOnly: true
+          - name: harbor-ca-cert
+            mountPath: /etc/docker/certs.d/harbor.harbor.svc
+            readOnly: true
+          - name: harbor-ca-cert
+            mountPath: /etc/docker/certs.d/harbor.harbor
+            readOnly: true
+      - name: runner
+        volumeMounts:
+          - name: harbor-ca-cert
+            mountPath: /usr/local/share/ca-certificates/harbor-ca.crt
+            subPath: ca.crt
+            readOnly: true
+        env:
+          - name: SSL_CERT_FILE
+            value: /usr/local/share/ca-certificates/harbor-ca.crt
+
 ## listenerTemplate is the PodSpec for each listener Pod
 ## For reference: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#PodSpec
 # listenerTemplate:

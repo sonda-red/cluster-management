@@ -1,0 +1,18 @@
+---
+# Bundle to distribute the CA certificate to this namespace
+# Requires trust-manager to be installed (cert-manager addon)
+apiVersion: trust.cert-manager.io/v1alpha1
+kind: Bundle
+metadata:
+  name: harbor-ca-bundle
+spec:
+  sources:
+    - secret:
+        name: "sonda-local-root-ca-key-pair"
+        key: "ca.crt"
+  target:
+    configMap:
+      key: "ca.crt"
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: github
