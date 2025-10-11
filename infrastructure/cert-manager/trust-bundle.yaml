@@ -7,11 +7,9 @@ spec:
     - secret:
         name: sonda-local-root-ca-key-pair
         key: tls.crt
-      namespace: cert-manager
   target:
     configMap:
       key: ca.crt
-      name: sonda-red-intra-root-ca
     namespaceSelector:
       matchLabels:
         trust.sonda.red/root-ca: "true"
