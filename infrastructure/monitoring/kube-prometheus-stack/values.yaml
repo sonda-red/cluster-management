@@ -15,14 +15,14 @@ grafana:
   ingress:
     enabled: true
     hosts:
-      - grafana.sonda.red.local
+      - grafana.sonda.red.intra
     path: /
     annotations:
-      cert-manager.io/cluster-issuer: sonda-red-local
+      cert-manager.io/cluster-issuer: sonda-red-intra
       kubernetes.io/ingress.class: nginx
     tls:
       - hosts:
-          - grafana.sonda.red.local
+          - grafana.sonda.red.intra
         secretName: grafana-tls
 
   ## Configure additional grafana datasources (passed through tpl)
@@ -98,12 +98,12 @@ prometheus:
   ingress:
     enabled: true
     hosts:
-      - prometheus.sonda.red.local
+      - prometheus.sonda.red.intra
     path: /
     annotations:
-      cert-manager.io/cluster-issuer: sonda-red-local
+      cert-manager.io/cluster-issuer: sonda-red-intra
       kubernetes.io/ingress.class: nginx
     tls:
       - hosts:
-          - prometheus.sonda.red.local
+          - prometheus.sonda.red.intra
         secretName: prometheus-tls

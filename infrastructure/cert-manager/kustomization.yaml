@@ -1,12 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: kube-system
+namespace: cert-manager
 resources:
-  - helm-repository.yaml
-  - helm-release.yaml
-  - host-firewall.yaml
+  - namespace.yaml
+  - helm-release-cert-manager.yaml  
+  - helm-release-trust-manager.yaml
+  - kustomization/
 configMapGenerator:
-  - name: cilium-values
+  - name: cert-manager-values
     files:
       - values.yaml
 generatorOptions:

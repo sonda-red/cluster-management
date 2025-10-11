@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: harbor-internal.sonda.red.local
+  - host: harbor-internal.sonda.red.intra
     http:
       paths:
       - path: /v2/

@@ -4,9 +4,8 @@ namespace: kube-system
 resources:
   - helm-repository.yaml
   - helm-release.yaml
-  - host-firewall.yaml
 configMapGenerator:
-  - name: cilium-values
+  - name: ingress-nginx-values
     files:
       - values.yaml
 generatorOptions:

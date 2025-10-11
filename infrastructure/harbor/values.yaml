@@ -25,7 +25,7 @@ expose:
       secretName: "harbor-tls"
   # ingress:
   #   hosts:
-  #     core: harbor.sonda.red.local
+  #     core: harbor.sonda.red.intra
   #   # set to the type of ingress controller if it has specific requirements.
   #   # leave as `default` for most ingress controllers.
   #   # set to `gce` if using the GCE ingress controller
@@ -43,7 +43,7 @@ expose:
   #     ingress.kubernetes.io/proxy-body-size: "0"
   #     nginx.ingress.kubernetes.io/ssl-redirect: "true"
   #     nginx.ingress.kubernetes.io/proxy-body-size: "0"
-  #     cert-manager.io/cluster-issuer: sonda-red-local
+  #     cert-manager.io/cluster-issuer: sonda-red-intra
   #     nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
   #     nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
   #     nginx.ingress.kubernetes.io/client-body-timeout: "7200"
