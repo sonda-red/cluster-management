@@ -13,8 +13,4 @@ data:
             match ".*\.sonda\.red\.intra"
             answer "{{ .Name }} 60 IN A 192.168.1.240"
         }
-        hosts {
-            fallthrough
-            192.168.1.240 sonda.red.intra
-        }
     }
