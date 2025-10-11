@@ -26,14 +26,12 @@ minRunners: 1
 ##
 ## If any of the above had already been set by the user in the runner pod
 ## template, ARC will observe those and not overwrite them.
-## Example configuration:
-#
-# githubServerTLS:
-#   certificateFrom:
-#     configMapKeyRef:
-#       name: config-map-name
-#       key: ca.crt
-#   runnerMountPath: /usr/local/share/ca-certificates/
+githubServerTLS:
+  certificateFrom:
+    configMapKeyRef:
+      name: sonda-red-intra-root-ca
+      key: ca.crt
+  runnerMountPath: /usr/local/share/ca-certificates/
 
 # keyVault:
   # Available values: "azure_key_vault"
