@@ -18,10 +18,10 @@ expose:
     # 3) none: configure no tls certificate for the ingress. If the default
     # tls certificate is configured in the ingress controller, choose this option
     certSource: auto
-    # auto:
+    auto:
       # The common name used to generate the certificate, it's necessary
       # when the type isn't "ingress"
-      # commonName: ""
+      commonName: "harbor-cert"
     # secret:
       # The name of secret which contains keys named:
       # "tls.crt" - the certificate
