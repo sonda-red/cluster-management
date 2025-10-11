@@ -31,7 +31,7 @@ githubServerTLS:
     configMapKeyRef:
       name: sonda-red-intra-root-ca
       key: ca.crt
-  runnerMountPath: /usr/local/share/ca-certificates
+  runnerMountPath: /usr/local/share/ca-certificates/
 
 # keyVault:
   # Available values: "azure_key_vault"
