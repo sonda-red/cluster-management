@@ -21,12 +21,12 @@ console:
   ingress:
     enabled: true
     ingressClassName: "nginx"
-    hostname: minio.sonda.red.local
+    hostname: minio.sonda.red.intra
     path: /
     labels: {}
       # node-role.kubernetes.io/ingress: platform
     annotations: 
-      cert-manager.io/cluster-issuer: sonda-red-local
+      cert-manager.io/cluster-issuer: sonda-red-intra
     tls: true
 
 affinity:

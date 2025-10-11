@@ -1,4 +1,4 @@
 installCRDs: true
 ingressShim:
   defaultIssuerKind: "ClusterIssuer"
-  defaultIssuerName: "sonda-red-local"
+  defaultIssuerName: "sonda-red-intra"

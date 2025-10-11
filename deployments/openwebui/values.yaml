@@ -76,7 +76,7 @@ ingress:
   class: ""
   # -- Use appropriate annotations for your Ingress controller, e.g., for NGINX:
   annotations:
-    cert-manager.io/cluster-issuer: "sonda-red-local"
+    cert-manager.io/cluster-issuer: "sonda-red-intra"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
   #   # Example for GKE Ingress
   #   kubernetes.io/ingress.class: "gce"
@@ -87,7 +87,7 @@ ingress:
   #   nginx.ingress.kubernetes.io/permanent-redirect: "https://chat.example.com"
   #   networking.gke.io/managed-certificates: "mydomain-chat-cert"
   #   # nginx.ingress.kubernetes.io/rewrite-target: /
-  host: "chat.sonda.red.local"
+  host: "chat.sonda.red.intra"
   additionalHosts: []
   tls: true
   existingSecret: ""
