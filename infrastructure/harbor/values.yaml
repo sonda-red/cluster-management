@@ -17,7 +17,7 @@ expose:
     # The tls certificate can be generated manually or by cert manager
     # 3) none: configure no tls certificate for the ingress. If the default
     # tls certificate is configured in the ingress controller, choose this option
-    certSource: none
+    certSource: auto
     # secret:
     #   # The name of secret which contains keys named:
     #   # "tls.crt" - the certificate
@@ -41,7 +41,7 @@ expose:
       # for Envoy, use ingress.kubernetes.io/force-ssl-redirect: "true" and remove the nginx lines below
       # ingress.kubernetes.io/ssl-redirect: "true"
       ingress.kubernetes.io/proxy-body-size: "0"
-      # nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
       nginx.ingress.kubernetes.io/proxy-body-size: "0"
       cert-manager.io/cluster-issuer: sonda-red-intra
       nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
