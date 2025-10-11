@@ -5,7 +5,8 @@ resources:
   - namespace.yaml
   - helm-release-cert-manager.yaml  
   - helm-release-trust-manager.yaml
-  - kustomization/
+  - issuer-ca.yaml
+  - root-ca.yaml
 configMapGenerator:
   - name: cert-manager-values
     files:
