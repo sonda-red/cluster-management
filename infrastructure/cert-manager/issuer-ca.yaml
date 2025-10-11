@@ -5,4 +5,4 @@ metadata:
   name: sonda-red-intra
 spec:
   ca:
-    secretName: sonda-intra-root-ca-key-pair
+    secretName: sonda-local-root-ca-key-pair
