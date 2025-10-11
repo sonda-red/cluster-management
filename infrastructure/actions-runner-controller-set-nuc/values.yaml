@@ -59,8 +59,7 @@ githubServerTLS:
 ##
 ## If any customization is required for dind or kubernetes mode, containerMode should remain
 ## empty, and configuration should be applied to the template.
-containerMode:
-  type: "dind"  ## type can be set to dind or kubernetes
+containerMode: {}
   ## the following is required when containerMode.type=kubernetes
   # kubernetesModeWorkVolumeClaim:
   #   accessModes: ["ReadWriteOnce"]
@@ -69,6 +68,89 @@ containerMode:
   #   resources:
   #     requests:
   #       storage: 1Gi
+
+# Custom pod template so we can mount the internal root CA inside both the runner
+# and the DinD sidecar, allowing docker to trust harbor.sonda.red.intra.
+template:
+  spec:
+    initContainers:
+      - name: init-dind-externals
+        image: ghcr.io/actions/actions-runner:latest
+        command:
+          - cp
+          - -r
+          - /home/runner/externals/.
+          - /home/runner/tmpDir/
+        volumeMounts:
+          - name: dind-externals
+            mountPath: /home/runner/tmpDir
+      - name: dind
+        image: docker:dind
+        args:
+          - dockerd
+          - --host=unix:///var/run/docker.sock
+          - --group=$(DOCKER_GROUP_GID)
+        env:
+          - name: DOCKER_GROUP_GID
+            value: "123"
+        securityContext:
+          privileged: true
+        startupProbe:
+          exec:
+            command:
+              - docker
+              - info
+          initialDelaySeconds: 0
+          failureThreshold: 24
+          periodSeconds: 5
+        volumeMounts:
+          - name: work
+            mountPath: /home/runner/_work
+          - name: dind-sock
+            mountPath: /var/run
+          - name: dind-externals
+            mountPath: /home/runner/externals
+          - name: harbor-registry-ca
+            mountPath: /etc/docker/certs.d/harbor.sonda.red.intra
+            readOnly: true
+          - name: harbor-registry-ca
+            mountPath: /etc/docker/certs.d/harbor.harbor
+            readOnly: true
+    containers:
+      - name: runner
+        image: ghcr.io/actions/actions-runner:latest
+        command:
+          - /home/runner/run.sh
+        env:
+          - name: DOCKER_HOST
+            value: unix:///var/run/docker.sock
+          - name: RUNNER_WAIT_FOR_DOCKER_IN_SECONDS
+            value: "120"
+          - name: NODE_EXTRA_CA_CERTS
+            value: /usr/local/share/ca-certificates/sonda-red-intra-root-ca/ca.crt
+          - name: RUNNER_UPDATE_CA_CERTS
+            value: "1"
+        volumeMounts:
+          - name: work
+            mountPath: /home/runner/_work
+          - name: dind-sock
+            mountPath: /var/run
+          - name: harbor-registry-ca
+            mountPath: /usr/local/share/ca-certificates/sonda-red-intra-root-ca
+            readOnly: true
+    volumes:
+      - name: work
+        emptyDir: {}
+      - name: dind-sock
+        emptyDir: {}
+      - name: dind-externals
+        emptyDir: {}
+      - name: harbor-registry-ca
+        configMap:
+          name: sonda-red-intra-root-ca
+          items:
+            - key: ca.crt
+              path: ca.crt
 
 ## listenerTemplate is the PodSpec for each listener Pod
 ## For reference: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#PodSpec
