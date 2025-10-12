@@ -7,7 +7,7 @@ data:
   buildkitd.toml: |
     # Simple BuildKit daemon configuration
     debug = false
-    root = "/var/lib/buildkit"
+    root = "/home/user/.local/share/buildkit"
     
     [grpc]
       address = [ "tcp://0.0.0.0:1234" ]
