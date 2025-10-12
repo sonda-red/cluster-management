@@ -95,14 +95,6 @@ template:
             value: "123"
         securityContext:
           privileged: true
-        startupProbe:
-          exec:
-            command:
-              - docker
-              - info
-          initialDelaySeconds: 0
-          failureThreshold: 24
-          periodSeconds: 5
         volumeMounts:
           - name: work
             mountPath: /home/runner/_work
