@@ -58,9 +58,10 @@ docker buildx create \
   --bootstrap \
   --name=sonda-buildkit \
   --driver=kubernetes \
-  --driver-opt=namespace=buildkit,rootless=true,replicas=2 \
+  --driver-opt=namespace=buildkit,replicas=2 \
   --driver-opt=requests.cpu=500m,requests.memory=1Gi \
-  --driver-opt=limits.cpu=4000m,limits.memory=8Gi
+  --driver-opt=limits.cpu=4000m,limits.memory=8Gi \
+  --driver-opt=image=moby/buildkit:v0.12.5
 
 # Use the builder
 docker buildx build \
@@ -81,14 +82,26 @@ This approach has the advantage of automatic scaling and load balancing managed 
 
 3. **Connection refused errors**: Ensure the BuildKit service is running and the gRPC port (1234) is accessible within the cluster.
 
+4. **User namespace mapping errors**: If you see errors like `"failed to setup UID/GID map: newuidmap failed"`, this indicates issues with rootless user namespace setup in Kubernetes. The current configuration uses the standard BuildKit image with appropriate security context instead of the rootless variant to avoid these issues.
+
 ### Configuration
 
 The BuildKit daemon is configured via a TOML configuration file mounted from a ConfigMap. Key configurations include:
 
-- **Root directory**: `/home/user/.local/share/buildkit` for buildkit state
+- **Image**: Uses `moby/buildkit:v0.12.5` (standard image) for better Kubernetes compatibility
+- **Root directory**: `/var/lib/buildkit` for buildkit state
 - **gRPC address**: `tcp://0.0.0.0:1234` for remote access
 - **Worker mode**: OCI worker with overlayfs snapshotter
 - **Registry configuration**: Trusted registries including Harbor
+- **Security**: Runs as non-root user (1000:1000) with minimal required capabilities
+
+#### Why Not Rootless Image?
+
+The deployment uses the standard BuildKit image instead of `moby/buildkit:rootless` because:
+- Rootless containers in Kubernetes often face user namespace mapping issues
+- The standard image with proper security context provides equivalent security
+- Better compatibility with various Kubernetes distributions and container runtimes
+- Avoids `newuidmap`/`newgidmap` permission issues common in containerized environments
 
 ### Logs Analysis
 
@@ -103,6 +116,7 @@ This indicates the daemon received a termination signal. Common causes:
 - Kubernetes node issues
 - Configuration problems
 - Network connectivity issues
+- User namespace mapping failures (resolved by using standard BuildKit image)
 
 Check pod status and logs:
 ```bash

@@ -7,19 +7,18 @@ data:
   buildkitd.toml: |
     # BuildKit daemon configuration for Kubernetes
     debug = false
-    root = "/home/user/.local/share/buildkit"
+    root = "/var/lib/buildkit"
     
     # Network configuration
     [grpc]
       address = [ "tcp://0.0.0.0:1234" ]
       debugAddress = "0.0.0.0:6060"
     
-    # OCI worker configuration (rootless mode)
+    # OCI worker configuration
     [worker.oci]
       enabled = true
       platforms = [ "linux/amd64", "linux/amd64/v2", "linux/amd64/v3" ]
       snapshotter = "overlayfs"
-      rootless = true
       
       # Performance optimizations
       [worker.oci.gcpolicy]

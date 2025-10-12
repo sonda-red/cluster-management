@@ -24,7 +24,7 @@ spec:
       serviceAccountName: buildkit
       initContainers:
         - name: install-trust-bundle
-          image: moby/buildkit:rootless
+          image: moby/buildkit:v0.12.5
           command:
             - /bin/sh
             - -c
@@ -47,12 +47,17 @@ spec:
             - |
               set -eu
               mkdir -p /work/etc-buildkit-cdi /work/etc-cdi /work/var-run-cdi
+              mkdir -p /buildkit-state
+              chown -R 1000:1000 /buildkit-state
           volumeMounts:
             - name: cdi-dirs
               mountPath: /work
+            - name: buildkit-state
+              mountPath: /buildkit-state
       containers:
         - name: buildkitd
-          image: moby/buildkit:rootless
+          image: moby/buildkit:v0.12.5
+          workingDir: /var/lib/buildkit
           env:
             - name: BUILDKITD_FLAGS
               value: --config /etc/buildkit/buildkitd.toml
@@ -65,6 +70,17 @@ spec:
             runAsGroup: 1000
             allowPrivilegeEscalation: false
             capabilities:
+              add:
+                - CHOWN
+                - DAC_OVERRIDE
+                - FOWNER
+                - FSETID
+                - KILL
+                - SETGID
+                - SETUID
+                - SETPCAP
+                - NET_BIND_SERVICE
+                - SYS_CHROOT
               drop:
                 - ALL
           ports:
@@ -116,7 +132,7 @@ spec:
               mountPath: /var/run/cdi
               subPath: var-run-cdi
             - name: buildkit-state
-              mountPath: /home/user/.local/share/buildkit
+              mountPath: /var/lib/buildkit
             - name: buildkit-config
               mountPath: /etc/buildkit
               readOnly: true
