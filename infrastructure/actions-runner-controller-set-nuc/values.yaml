@@ -59,65 +59,34 @@ githubServerTLS:
 ##
 ## If any customization is required for dind or kubernetes mode, containerMode should remain
 ## empty, and configuration should be applied to the template.
-containerMode: {}
-  ## the following is required when containerMode.type=kubernetes
-  # kubernetesModeWorkVolumeClaim:
-  #   accessModes: ["ReadWriteOnce"]
-  #   # For local testing, use https://github.com/openebs/dynamic-localpv-provisioner/blob/develop/docs/quickstart.md to provide dynamic provision volume with storageClassName: openebs-hostpath
-  #   storageClassName: "dynamic-blob-storage"
-  #   resources:
-  #     requests:
-  #       storage: 1Gi
+containerMode:
+  type: kubernetes
+  kubernetesModeWorkVolumeClaim:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 5Gi
 
-# Custom pod template so we can mount the internal root CA inside both the runner
-# and the DinD sidecar, allowing docker to trust harbor.sonda.red.intra.
+# Configure the runner pods for Kubernetes mode and ensure the trust bundle is available to the
+# runner so GitHub, Harbor, and other internal endpoints remain trusted when the DinD sidecar is
+# removed.
 template:
   spec:
-    initContainers:
-      - name: init-dind-externals
-        image: ghcr.io/actions/actions-runner:latest
-        command:
-          - cp
-          - -r
-          - /home/runner/externals/.
-          - /home/runner/tmpDir/
-        volumeMounts:
-          - name: dind-externals
-            mountPath: /home/runner/tmpDir
-      - name: dind
-        image: docker:dind
-        args:
-          - dockerd
-          - --host=unix:///var/run/docker.sock
-          - --group=$(DOCKER_GROUP_GID)
-        env:
-          - name: DOCKER_GROUP_GID
-            value: "123"
-        securityContext:
-          privileged: true
-        volumeMounts:
-          - name: work
-            mountPath: /home/runner/_work
-          - name: dind-sock
-            mountPath: /var/run
-          - name: dind-externals
-            mountPath: /home/runner/externals
-          - name: harbor-registry-ca
-            mountPath: /etc/docker/certs.d/harbor.sonda.red.intra
-            readOnly: true
-          - name: harbor-registry-ca
-            mountPath: /etc/docker/certs.d/harbor.harbor
-            readOnly: true
     containers:
       - name: runner
-        image: ghcr.io/actions/actions-runner:latest
+        image: ghcr.io/actions/runner:latest
         command:
           - /home/runner/run.sh
         env:
-          - name: DOCKER_HOST
-            value: unix:///var/run/docker.sock
-          - name: RUNNER_WAIT_FOR_DOCKER_IN_SECONDS
-            value: "120"
+          - name: ACTIONS_RUNNER_CONTAINER_HOOKS
+            value: /home/runner/k8s/index.js
+          - name: ACTIONS_RUNNER_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
+            value: "true"
           - name: NODE_EXTRA_CA_CERTS
             value: /usr/local/share/ca-certificates/sonda-red-intra-root-ca/ca.crt
           - name: RUNNER_UPDATE_CA_CERTS
@@ -125,24 +94,16 @@ template:
         volumeMounts:
           - name: work
             mountPath: /home/runner/_work
-          - name: dind-sock
-            mountPath: /var/run
-          - name: harbor-registry-ca
-            mountPath: /usr/local/share/ca-certificates/sonda-red-intra-root-ca
-            readOnly: true
     volumes:
       - name: work
-        emptyDir: {}
-      - name: dind-sock
-        emptyDir: {}
-      - name: dind-externals
-        emptyDir: {}
-      - name: harbor-registry-ca
-        configMap:
-          name: sonda-red-intra-root-ca
-          items:
-            - key: ca.crt
-              path: ca.crt
+        ephemeral:
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+                - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 5Gi
 
 ## listenerTemplate is the PodSpec for each listener Pod
 ## For reference: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#PodSpec
