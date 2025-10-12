@@ -12,11 +12,16 @@ spec:
     metadata:
       labels:
         app: buildkit
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
     spec:
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+      terminationGracePeriodSeconds: 30
+      serviceAccountName: buildkit
       initContainers:
         - name: install-trust-bundle
           image: moby/buildkit:rootless
@@ -50,19 +55,32 @@ spec:
           image: moby/buildkit:rootless
           env:
             - name: BUILDKITD_FLAGS
-              value: --addr tcp://0.0.0.0:1234
+              value: --config /etc/buildkit/buildkitd.toml
             - name: SSL_CERT_FILE
               value: /etc/ssl/certs/ca-certificates.crt
+            - name: ROOTLESSKIT_DEBUG
+              value: "0"
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
           ports:
             - containerPort: 1234
               name: grpc
+            - containerPort: 6060
+              name: debug
           resources:
             requests:
-              cpu: 250m
-              memory: 512Mi
+              cpu: 500m
+              memory: 1Gi
+              ephemeral-storage: 2Gi
             limits:
-              cpu: 2000m
-              memory: 4Gi
+              cpu: 4000m
+              memory: 8Gi
+              ephemeral-storage: 10Gi
           readinessProbe:
             tcpSocket:
               port: grpc
@@ -73,6 +91,13 @@ spec:
               port: grpc
             initialDelaySeconds: 30
             periodSeconds: 20
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - "kill -TERM 1 && sleep 10"
           volumeMounts:
             - name: ca-store
               mountPath: /etc/ssl/certs/ca-certificates.crt
@@ -90,6 +115,11 @@ spec:
             - name: cdi-dirs
               mountPath: /var/run/cdi
               subPath: var-run-cdi
+            - name: buildkit-state
+              mountPath: /home/user/.local/share/buildkit
+            - name: buildkit-config
+              mountPath: /etc/buildkit
+              readOnly: true
       volumes:
         - name: ca-store
           emptyDir: {}
@@ -98,3 +128,10 @@ spec:
             name: sonda-red-intra-root-ca
         - name: cdi-dirs
           emptyDir: {}
+        - name: buildkit-state
+          emptyDir:
+            medium: Memory
+            sizeLimit: 2Gi
+        - name: buildkit-config
+          configMap:
+            name: buildkit-config
