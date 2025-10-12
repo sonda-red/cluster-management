@@ -5,38 +5,21 @@ metadata:
   namespace: buildkit
 data:
   buildkitd.toml: |
-    # BuildKit daemon configuration for Kubernetes
+    # Simple BuildKit daemon configuration
     debug = false
     root = "/var/lib/buildkit"
     
-    # Network configuration
     [grpc]
       address = [ "tcp://0.0.0.0:1234" ]
-      debugAddress = "0.0.0.0:6060"
     
-    # OCI worker configuration
     [worker.oci]
       enabled = true
-      platforms = [ "linux/amd64", "linux/amd64/v2", "linux/amd64/v3" ]
+      platforms = [ "linux/amd64" ]
       snapshotter = "overlayfs"
-      
-      # Performance optimizations
-      [worker.oci.gcpolicy]
-        keepBytes = 2147483648  # 2GB
-        keepDuration = 172800   # 48 hours
-        filters = [ "type==source.local", "type==exec.cachemount", "type==source.git.checkout" ]
     
-    # Disable containerd worker (not available in rootless)
     [worker.containerd]
       enabled = false
     
-    # Registry configuration
-    [registry]
-      [registry."harbor.sonda.red.intra"]
-        http = false
-        insecure = false
-        ca = ["/etc/sonda-red/ca.crt"]
-      
-      # Docker Hub configuration  
-      [registry."docker.io"]
-        mirrors = ["mirror.gcr.io"]
+    [registry."harbor.sonda.red.intra"]
+      http = false
+      insecure = false

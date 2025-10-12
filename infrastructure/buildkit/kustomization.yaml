@@ -3,8 +3,6 @@ kind: Kustomization
 namespace: buildkit
 resources:
   - namespace.yaml
-  - serviceaccount.yaml
   - deployment.yaml
   - service.yaml
   - configmap.yaml
-  - poddisruptionbudget.yaml

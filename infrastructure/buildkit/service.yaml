@@ -12,7 +12,3 @@ spec:
       port: 1234
       targetPort: grpc
       protocol: TCP
-    - name: debug
-      port: 6060
-      targetPort: debug
-      protocol: TCP
